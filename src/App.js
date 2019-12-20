@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 
+import Message from './components/Message/Message';
+
 class App extends Component {
   constructor(props){
     super(props);
@@ -22,7 +24,8 @@ class App extends Component {
   createMessage = () => {
     let newMessage = {
       name: this.state.name,
-      message: this.state.message
+      message: this.state.message,
+      timestamp: Date.now()
     };
     let newMessages = this.state.messages;
     newMessages.push(newMessage)
@@ -36,10 +39,12 @@ class App extends Component {
     let messages = [];
     this.state.messages.forEach((element, i) => {
       messages.push(
-        <div key={i} className="message">
-          <p><span>{element.name}</span> said:</p>
-          <p>{element.message}</p>
-        </div>
+        <Message 
+          key={i}
+          author={element.name}
+          message={element.message}
+          timestamp={element.timestamp}
+        />
       );
     });
     return (<div className="messages-container">{messages}</div>);
