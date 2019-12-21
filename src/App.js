@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 
+import firebase from './lib/firebase.js';
+
 import Message from './components/Message/Message';
 
 class App extends Component {
@@ -11,6 +13,30 @@ class App extends Component {
       name: "J Bruin",
       message: ""
     };
+    this.db = firebase.firestore();
+  }
+
+  componentDidMount() {
+    this.unsubscribe = this.db.collection("messages")
+    .orderBy("timestamp", "desc").onSnapshot((collection) => {
+      let newMessagesList = [];
+      collection.forEach(function(doc){
+        let message = doc.data();
+        let newMessage = {
+          name: message.name,
+          message: message.message,
+          timestamp: message.timestamp
+        }
+        newMessagesList.push(newMessage);
+      });
+      this.setState({
+        messages: newMessagesList
+      });
+    });
+  }
+
+  componentWillUnmount(){
+    this.unsubscribe();
   }
 
   handleNameChange = e => {
@@ -30,6 +56,15 @@ class App extends Component {
     let newMessages = this.state.messages;
     newMessages.push(newMessage)
     this.setState({messages: newMessages});
+
+    this.db.collection("messages").add(newMessage)
+    .then(function(docRef) {
+        console.log("Document written with ID: ", docRef.id);
+    })
+    .catch(function(error) {
+        console.error("Error adding document: ", error);
+    });
+  
   }
 
   renderMessages = () => {

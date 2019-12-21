@@ -1,12 +1,13 @@
 .message {
-    padding: 1em;
+    padding: 0.5em;
     border: 1px solid white;
     border-radius: 4px;
     display: flex;
     align-items: center;
-    margin-bottom: 2em;
+    margin-bottom: 0.5em;
 }
 
 .message-item{
+    margin-left: 1em;
     margin-right: 1em;
 }
