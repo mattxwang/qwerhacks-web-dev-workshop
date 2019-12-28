@@ -2,11 +2,11 @@
 
 Hey there! This repo contains the finished product of QWER Hacks 2020's Intro to Web Development (with React & Firebase) workshop, and a written guide that summarizes and expands upon the content of the workshop.
 
-It assumes basic understanding of programming fundamentals (e.g. functions, conditionals, variables, maybe some OOP), but doesn't explicitly assume previous HTML, CSS, JS, React, or Firebase experience. However, if you don't have experience with HTML/CSS/JS, I 100% recommend that you look at some of the [appendix resources](#appendix) first, since this document/workshop brushes over the details.
+It assumes basic understanding of programming fundamentals (e.g. functions, conditionals, variables) and a bit of experience with object-oriented programming, but doesn't explicitly assume previous HTML, CSS, JS, React, or Firebase experience. However, if you don't have experience with HTML/CSS/JS, I 100% recommend that you look at some of the [appendix resources](#appendix) first, since this document/workshop brushes over the details.
 
 You can find the slides for the workshop [here](https://docs.google.com/presentation/d/1qwiixhs7Y1T6ZBk9C_vluvLPCe3vOzkQXeTcIYtpPPw/), though this document covers (almost) everything in the slides and more!
 
-Since this is a hackathon workshop, it goes for breadth over depth and emphasizes working familiarity rather than core understanding. Unfortunately, that menas that we gloss over a few important web development concepts; however, I've included some pointers in the Appendix on learning more. In this document, I'll occasionally footnote interesting tidbits that you can learn more about!
+Since this is a hackathon workshop, it goes for breadth over depth and emphasizes working familiarity rather than core understanding. Unfortunately, that means that we gloss over a few important web development concepts; however, I've included some pointers in the Appendix on learning more. In this document, I'll occasionally footnote interesting tidbits that you can learn more about!
 
 (this workshop was developed and presented by [matthew wang](https://matthewwang.me). if you have any questions, feel free to [ask!](mailto:matt@matthewwang.me))
 
@@ -28,7 +28,9 @@ Almost all web and mobile applications follow the client-server interaction mode
 
 If you've heard of "front-end" or "back-end" web development, it usually boils down to the difference between the client and the server.
 
-The **client**, or the front-end, is what runs on the user's computer (or other device). It's responsible for creating whatever the user sees (e.g. the interface for a web page, a mobile app, or a video game). For web applications in particular, the client is the user's web browser (like Chrome, Firefox, or Safari). Browsers themselves run code that some developer (like you!) has written, usually in HTML, CSS, and Javascript ([*](#browser-languages)). As we write some code, I'll expand a bit more on what these are; I've also included appendix entries for [HTML](#html), [CSS](#css), and [JS](#js).
+The **client**, or the front-end, is what runs on the user's computer (or other device). It's responsible for creating whatever the user sees (e.g. the interface for a web page, a mobile app, or a video game).
+
+For web applications in particular, the client is the user's web browser (like Chrome, Firefox, or Safari). Browsers themselves run code that some developer (like you!) has written, usually in HTML, CSS, and Javascript ([*](#browser-languages)). As we write some code, I'll expand a bit more on what these are; I've also included appendix entries for [HTML](#html), [CSS](#css), and [JS](#js).
 
 Some apps can run entirely as front-end applications (meaning that after the user downloads it, the app is entirely self-contained). Examples include simple text editors or single-player video games!
 
@@ -38,7 +40,11 @@ To do this, you'll need some central computer to store and distribute this infor
 
 Servers can be written in a variety of languages; I guarantee that there's an HTTP server for your favourite language (unless it's [Brainfuck](https://en.wikipedia.org/wiki/Brainfuck)). The [appendix entry](#server-languages) covers some popular options and expands a bit more on the topic.
 
-If you're storing lots of data (like millions or billions of users), you'll need a good way to organize, store, and retrieve your data. **Databases** are programs and rules that let developers do this efficiently. It might not sound like it, but database engineering is one of the trickiest (and highest-paying) types of web development work! Recently, there's also been an uptick in popularity of data science (and more broadly, machine learning) - there's quite a bit of cross-over with databases and data science! The [appendix entry](#databases) goes a bit more in-depth; this is a topic that we'll almost entirely gloss over in this workshop.
+If you're storing lots of data (like millions or billions of users), you'll need a good way to organize, store, and retrieve your data. **Databases** are programs and rules that let developers do this efficiently. It might not sound like it, but database engineering is one of the trickiest (and highest-paying) types of web development work! 
+
+Recently, there's also been an uptick in popularity of data science (and more broadly, machine learning) - there's quite a bit of cross-over with databases and data science! 
+
+The [appendix entry](#databases) goes a bit more in-depth; this is a topic that we'll almost entirely gloss over in this workshop.
 
 Hopefully, you have a better understanding of how web applications work! If stuff like this sounds cool, then you should definitely explore more of web development!
 
@@ -68,7 +74,9 @@ React is one of many MVC/MV* frameworks; I talk a bit more about what that means
 
 [Firebase](https://firebase.google.com) is a "comprehensive app development platform" designed to make developers' lives easier. Specifically, it implements a lot of common back-end functionalities for you (like database management, user authentication, analytics, hosting, monitoring, and testing).
 
-Today, we'll use **Cloud Firestore**, which is a database scheme and manager provided by Firebase. It simplifies a huge (and I really mean *huge*) part of making apps. Firebase itself will manage deploying and hosting the server; we'll use Firebase's Javascript library to communicate with that server. Later on in the workshop, I'll walk you through how to set up a Firebase app.
+Today, we'll use **Cloud Firestore**, which is a database scheme and manager provided by Firebase. It simplifies a huge (and I really mean *huge*) part of making apps. 
+
+For us, Firebase itself will manage deploying and hosting the server; we'll use Firebase's Javascript library to communicate with that server. Later on in the workshop, I'll walk you through how to set up a Firebase app.
 
 Firebase is a product that's sold by Google, though many of its supporting libraries are open-source. It's a comparatively new product that competes in many fields of web development, but doesn't have a single competitor. I talk a bit more about Firebase [in the appendix](#more-firebase).
 
@@ -115,7 +123,9 @@ You should get a screen like this:
 
 One convenient thing is that `create-react-app` automatically refreshes your page every time you make a change to your app's code; it just makes life *that* much easier.
 
-## React Basics: App Structure
+## Understanding the Template
+
+### Understanding the Template: App Structure
 
 Now, let's jump into React. The splash tells us to edit `src/App.js`, so let's do that!
 
@@ -130,6 +140,7 @@ And change it to this:
 Here's the code, if you prefer to copy-paste it (you don't have to copy the comments, which are `//`):
 
 ```jsx
+// App.js
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
@@ -163,9 +174,10 @@ What did we just do? Well, we didn't actually change any content of the web-app 
 
 But that's not helpful if we don't know what's going on! Let's break down what's happening in this file.
 
-### React Basics: Imports
+### Understanding the Template: Imports
 
 ```jsx
+// App.js
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
@@ -181,9 +193,10 @@ In this case, each of these three import statements is doing something slightly 
 
 Imports are a relatively new feature of Javascript, and they can be quite confusing ([*](#es6-imports)). I explain more about some of Javascript's quirks [in the appendix](#js).
 
-### React Basics: Classes
+### Understanding the Template: Classes
 
 ```jsx
+// App.js
 class App extends React.Component {
   render = () => {
     return (
@@ -211,6 +224,7 @@ class App extends React.Component {
 Wow, there's a lot of code here! The first line,
 
 ```jsx
+// App.js
 class App extends React.Component {
     ...
 }
@@ -218,9 +232,10 @@ class App extends React.Component {
 
 is declaring a class called `App`; it extends (or inherits, implements, etc.) the class `React.Component`. This class will contain, you guessed it, our entire app. And, it extends `React.Component` because our entire app will be a React component!
 
-### React Basics: Render Function
+### Understanding the Template: Render Function
 
 ```jsx
+// App.js
 render = () => {
     return (
       <div className="App">
@@ -267,7 +282,7 @@ class Greeter {
 }
 ```
 
-If there's only one paramter, you can omit the parens. If there are no parameters, you need to have the empty parens.
+If there's only one parameter, you can omit the parens. If there are no parameters, you need to have the empty parens.
 
 ```js
 const hi = message => {
@@ -281,11 +296,12 @@ const hello = () => {
 }
 ```
 
-### React Basics: JSX
+### Understanding the Template: JSX
 
 Anyways, back to this:
 
 ```jsx
+// App.js
 render = () => {
     return ( // must return a JSX element!
       <div className="App">
@@ -300,14 +316,15 @@ Back up a minute. What's JSX? **JSX** ([*](#jsx)) is a combination of HTML and J
 For example, note this line:
 
 ```jsx
+// App.js
 <img src={logo} className="App-logo" alt="logo" />
 ```
 
-The `{logo}` tells React to use the variable `logo`, which if you remember, is the imgae we imported at the top of the file! You can't do stuff like this in HTML, which makes JSX very powerful! The general idea is that anything in braces (`{}`) is processed as Javascript, rather than raw HTML.
+The `{logo}` tells React to use the variable `logo`, which if you remember, is the image we imported at the top of the file! You can't do stuff like this in HTML, which makes JSX very powerful! The general idea is that anything in braces (`{}`) is processed as Javascript, rather than raw HTML.
 
 A few tidbits:
 
-If you're familiar with HTML and CSS, you'll know that you can use the `class="..."` attribute to add CSS classes to HTML elements. Unfortunately, `class` is a keyword in Javascript (we just used it earlier!), so you have to use `className="..."` instead - but the effect is the same.
+If you're familiar with HTML and CSS, you'll know that you can use the `class="..."` attribute to add CSS classes to HTML elements. But, `class` is a keyword in Javascript (we just used it earlier!), so you have to use `className="..."` instead - the effect is the same.
 
 Unfortunately, I don't have the time (or space) to go more in-depth in JSX, but the footnote ([*](#jsx)) has more info (and if you don't know what HTML ([*](#html)) is, check out the footnote too)! React's official documentation also has a [great page](https://reactjs.org/docs/introducing-jsx.html) that explains more.
 
@@ -341,17 +358,339 @@ return (
 
 One final tidbit: all we really did was change `App` from being a function to a class with a function. I'll have to be a bit hand-wavy about this now, but it turns out classes and functions are pretty similar ([*](#javascript-classes)).
 
-### React Basics: Export
+### Understanding the Template: Export
 
 ```jsx
+// App.js
 export default App;
 ```
 
 We won't really touch this line too often, but this has to do with the `import` we talked about earlier! It turns out, another file imports our `App.js` file. Like in other languages, we need to tell other programs what they can import; in this case, we'll say that the class `App` is exported. The `default` means the export isn't named by default ([*](#es6-import)).
 
-## React Basics: Making Stuff!
+## Basic App Layout
 
-Okay, now let's make some stuff change on the screen! We'll edit our `render()` function
+### Basic App Layout: Quick Header
+
+Okay, now let's make some stuff change on the screen! We'll edit our `render()` function a bit.
+
+First, let's do some cleanup:
+
+```jsx
+// App.js
+import React from 'react';
+import './App.css';
+class App extends React.Component {
+  render = () => {
+    return (
+      <div>
+        <header>the hive</header>
+        <p>find out what's all the buzz!</p>
+      </div>
+    );
+  }
+}
+
+export default App;
+```
+
+Ah! That looks horrible!
+
+![barebones JSX, no styling!](images/barebones-jsx.png)
+
+Let's fix some of this up.
+
+First, we'll add some CSS classes. Remember, in JSX, you need to use `className` instead of `class`.
+
+```jsx
+// App.js
+import React from 'react';
+import './App.css';
+class App extends React.Component {
+  render = () => {
+    return (
+      <div className="app-container">
+        <header className="header-text">the hive</header>
+        <p>find out what's all the buzz!</p>
+      </div>
+    );
+  }
+}
+
+export default App;
+```
+
+Now, we can head into `src/App.css`, and change some of the styling rules for our code. I'll comment the code with `/* */`; if you don't follow everything that's happening, I'd definitely recommend the [CSS Appendix](#css).
+
+```css
+/* App.css */
+.app-container { /* selecting all elements with class "app-container" */
+  background-color: #282c34; /* makes background a shade of grey */
+  font-size: 16px; /* sets font size to 16 pixels */
+  color: white; /* sets text color to white */
+  padding: 1em; /* adds 1 font-size (i.e. 16px) of space inside the element */
+  min-height: calc(100vh - 2em); /* a little complicated! refer to appendix */
+}
+.header-text{ /* selecting all elements with class header-text */
+  font-size: 2em; /* font size is double of parent */
+  font-weight: bold; /* make the text bold! */
+}
+```
+
+![barebones JSX with a bit of styling, no styling!](images/barebones-with-styling.png)
+
+### Basic App Layout: Adding Inputs
+
+Cool! But right now, this doesn't have any chatting capability! Let's add a place for the user to input text.
+
+```jsx
+// App.js
+render = () => {
+    return (
+      <div className="app-container">
+        <header className="header-text">the hive</header>
+        <p>find out what's all the buzz!</p>
+        <hr />
+        <div className="message-box">
+            <input 
+                className="text-input"
+                type="text"
+                placeholder="your name..."
+            />
+            <input 
+                className="text-input"
+                type="text"
+                placeholder="your message..."
+            />
+        </div>
+      </div>
+    );
+}
+```
+
+The `<input>` tag is one of the default HTML tags that's designed to handle user input.
+
+![adding inputs to our barebones page](images/barebones-unstyled-inputs.png)
+
+Agh, those inputs look terrible! Let's give them a bit of styling. Remember, we've already added the class `text-input`!
+
+```css
+/* App.css */
+.text-input{
+  margin-right: 1em; /* adds 1 font-size of space to the right of the element*/
+  padding: 0.5em; /* adds half a font-size of space inside the element */
+  border: 4px solid white; /* adds a solid white border of 4px around the element*/
+  border-radius: 4px; /* curves the border's edges by 4px */
+  font-size: 1em; /* makes the font size the same as the parent */
+}
+```
+
+Not awful!
+
+![styling our added inputs](images/barebones-styled-inputs.png)
+
+### Basic App Layout: Adding a Button
+
+We'll probably also want to add a send button.
+
+```jsx
+// App.js
+render = () => {
+    return (
+      <div className="app-container">
+        ...
+        <div className="message-box">
+            <input 
+                className="text-input"
+                type="text"
+                placeholder="your name..."
+            />
+            <input 
+                className="text-input"
+                type="text"
+                placeholder="your message..."
+            />
+            <button className="send-button">
+                Send Message
+            </button>
+        </div>
+      </div>
+    );
+}
+```
+
+![adding a button to the inputs](images/barebones-unstyled-button.png)
+
+And again, let's style it. Common pattern, huh?
+
+```css
+/* App.css */
+.send-button {
+  padding: 0.5em;
+  background-color: #AED643;
+  border: 4px solid #AED643;
+  border-radius: 4px;
+  color: black;
+  font-size: 1em;
+}
+```
+
+![styling the button](images/barebones-styled-button.png)
+
+Cool cool cool! I think we're now ready to design our messages, and really get into React!
+
+## React Fundamentals
+
+### A Brief Interlude on Components
+
+One of the biggest concepts in software engineering is DRY, or don't repeat yourself - there are lots of good reasons why ([*](#dry)). If code or functionality would be duplicated many times, we'll abstract it away: with classes, functions, or in our case, components.
+
+Our chatroom application will have tons and tons of messages, all with similar characteristics (the message, the user who sent it, maybe a timestamp or a profile avatar).
+
+We *could* construct each message individually from our data, but that'd be tedious and annoying. Instead, React gives us tools to create custom components, where we can pass in the data and a template for our data; React will handle the rest of the work!
+
+That sounds like a lot of work, but you'll have to trust me on why this is useful. Think about websites like Twitter, Facebook, or Instagram - they have tons of reused components like tweet cards, facebook posts, or photo comments.
+
+![example of a facebook post, taken from ACM Hack](images/fbpost.png)
+
+*image shamelessly taken from ACM Hack*
+
+If you want more convincing, you can look at [the appendix](#more-react).
+
+### React Fundamentals: Creating a Component
+
+So, let's make a custom message component!
+
+In order to do this, we're going to create a folder `src/components`, and create two files: `src/components/Message.js` and `src/components/Message.css`.
+
+First, let's make a class called `Message` with its own render function. For now, we'll hard-code some data - we'll make it modular in a bit.
+
+```jsx
+// src/components/Message.js
+import React from 'react';
+import './Message.css';
+
+class Message extends React.Component {
+    render(){
+        let image = "https://api.adorable.io/avatars/64/matt.png";
+        return (
+            <div className="message">
+                <div className="message-item">
+                    <img className="message-img" src={image} alt="profile pic" />
+                </div>
+                <div className="message-item">
+                    <p><b>@matt</b> <span>01/25/20</span></p>
+                    <p>excited to learn web development at QWER hacks!</p>
+                </div>
+            </div>
+        );
+    }
+}
+
+export default Message;
+```
+
+*A quick note:* the URL I put in `image` is a website that randomly generates cartoon faces, called [Adorable Avatars](http://avatars.adorable.io/). It's just useful for creating profile images, but not needed.
+
+Let's import this component, and add it to our `App`.
+
+```jsx
+// App.js
+import React from 'react';
+import './App.css';
+import Message from './components/Message'; // added this!
+
+class App extends React.Component {
+    render = () => {
+        return (
+            <div className="app-container">
+                ...
+                <div className="message-box">
+                    ...
+                </div>
+                <Message /> { /* added this! */ }
+            </div>
+        );
+    }
+}
+
+...
+```
+
+![adding the message component to our app](images/sample-message-unstyled.png)
+
+Eh, could look better. Let's add some CSS.
+
+```css
+/* src/components/Message.css */
+.message {
+    padding: 0.5em;
+    border: 1px solid white;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    margin-top: 0.5em;
+}
+.message-item{
+    margin-left: 1em;
+    margin-right: 1em;
+}
+```
+
+![styling messages!](images/sample-message-styled.png)
+
+Cool! Now it kind of looks like a tweet.
+
+But, that wasn't that helpful! We hard-coded the contents of the message into the component. Instead, let's see if we can pass in some data, and have the component manage it.
+
+To understand how this works, we need to talk about `this` and `props`.
+
+### An Interlude: More on Classes, and `this`
+
+`this` is a common topic of confusion in Javascript ([*](#this)) (and object-oriented programming in general). To understand it, we'll have to take a quick detour on classes.
+
+Like in many other programming languages, classes have a `constructor` - a special function that gets called when a class is made. You can pass in parameters and access them.
+
+```js
+class Person {
+    constructor (name){
+        console.log(name);
+    }
+}
+let m = Person("matt"); // prints "matt"
+```
+
+Every time you create a new copy of a class, we'll call this copy a different **instance**.
+
+```js
+let i = Person("isabel"); // one instance
+let a = Person("arjun"); // different instance!
+```
+
+For now, we'll just say that `this` refers to the **instance of the current calling class**. In other words, if we use `this` in a class, it'll refer to the functions and variables of that specific version of the class.
+
+To access specific properties of a class, you'll use dot notation (i.e. `this.something`).
+
+```js
+class Person {
+    constructor (name){
+        this.name = name;
+    }
+    identify = () => {
+        console.log(this.name);
+    }
+}
+
+let s = Person("sharvani");
+s.identify(); // logs "sharvani"
+let j = Person("julia");
+j.identify(); // logs "julia"
+```
+
+As a side note, this is why we needed to use arrow functions ([*](#arrow-functions)).
+
+### React Fundamentals: this and props
+
+...
 
 ## Appendix
 
@@ -363,7 +702,7 @@ Okay, now let's make some stuff change on the screen! We'll edit our `render()` 
 
 #### this
 
-#### arrow functions
+#### Arrow Functions
 
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
 
@@ -408,3 +747,5 @@ Here are the things I've footnoted that don't fall under an appendix category.
 Mention plugins (like Flash, Silverlight), web assembly, etc.
 
 ### SPA
+
+### DRY
