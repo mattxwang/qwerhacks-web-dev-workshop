@@ -322,6 +322,12 @@ For example, note this line:
 
 The `{logo}` tells React to use the variable `logo`, which if you remember, is the image we imported at the top of the file! You can't do stuff like this in HTML, which makes JSX very powerful! The general idea is that anything in braces (`{}`) is processed as Javascript, rather than raw HTML.
 
+Here's another quick example:
+
+```jsx
+...
+```
+
 A few tidbits:
 
 If you're familiar with HTML and CSS, you'll know that you can use the `class="..."` attribute to add CSS classes to HTML elements. But, `class` is a keyword in Javascript (we just used it earlier!), so you have to use `className="..."` instead - the effect is the same.
@@ -540,7 +546,7 @@ Cool cool cool! I think we're now ready to design our messages, and really get i
 
 ## React Fundamentals
 
-### A Brief Interlude on Components
+### Why Components?
 
 One of the biggest concepts in software engineering is DRY, or don't repeat yourself - there are lots of good reasons why ([*](#dry)). If code or functionality would be duplicated many times, we'll abstract it away: with classes, functions, or in our case, components.
 
@@ -642,7 +648,27 @@ Cool! Now it kind of looks like a tweet.
 
 But, that wasn't that helpful! We hard-coded the contents of the message into the component. Instead, let's see if we can pass in some data, and have the component manage it.
 
-To understand how this works, we need to talk about `this` and `props`.
+To understand how this works, we need to talk about `this` and `props`. Before I get into the specifics, let me just explain what our goal is.
+
+We want:
+
+```jsx
+<Message message="hello world" author ="matt" ... />
+<Message message="welcome to qwer hacks!" author ="isabel" ... />
+```
+
+to output something like:
+
+```jsx
+<Message>
+    <span>matt</span> says <span>hello world</span>
+</Message>
+<Message>
+    <span>isabel</span> says <span>welcome to qwer hacks!</span>
+</Message>
+```
+
+But first, we need to learn about `this`.
 
 ### An Interlude: More on Classes, and `this`
 
@@ -690,7 +716,189 @@ As a side note, this is why we needed to use arrow functions ([*](#arrow-functio
 
 ### React Fundamentals: this and props
 
+Why did we have to talk about `this`? Well, you might remember that the component we created is a class - so we'll use `this` to refer to any component's properties.
+
+In particular, React has made it easy for you to access a component's properties through an object called `this.props`, which contains all of the values passed in to the component.
+
+It's easiest to demonstrate this with an example:
+
+```jsx
+class UserCard extends React.Component{
+    render(){
+        return (
+            <div>
+                <h1>{this.props.username}</h1>
+                <p>
+                    {this.props.bio}
+                </p>
+            </div>
+        );
+    }
+}
+
+<UserCard
+    username="jared"
+    bio="my name is jared, i'm 19, and i don't know how to read"
+/>
+
+// generates:
+
+<div>
+    <h1>jared</h1>
+    <p>
+        my name is jared, i'm 19, and i don't know how to read
+    </p>
+</div>
+```
+
+As you can see in an example, you can access information passed in to the component with `this.props`, and treat it like you would any other Javascript variable.
+
+One quick note. If you want to do something in the constructor, you need to add in `props` as an argument, and call the function `super(props)`. Why, you might ask? It has to do with OOP ([*](#super-props)).
+
+```jsx
+class UserCard extends React.Component{
+    constructor(props){
+        super(props);
+        ...
+    }
+}
+```
+
+With that in mind, let's apply that to our custom `Message` component!
+
+For now, I'm going to say we need three props:
+
+* `author`, a `string` containing who wrote the message
+* `message`, a `string` containing the message's text
+* `timestamp`, which for now will be a `string` containing the message's timestamp (but we'll change that later)
+
+```jsx
+// Message.js
+class Message extends React.Component {
+    render(){
+        let image = "https://api.adorable.io/avatars/64/" + this.props.author + ".png"; // randomly generates a consistent image for the username
+        return (
+            <div className="message">
+                <div className="message-item">
+                    <img className="message-img" src={image} alt="profile pic" />
+                </div>
+                <div className="message-item">
+                    <p><b>{this.props.author}</b> <span>{this.props.timestamp}</span></p>
+                    <p>{this.props.message}</p>
+                </div>
+            </div>
+        );
+    }
+}
+```
+
+Ah, but if we run this code as is, it won't work as intended - we haven't given any values to the props (they'll all be `undefined`). Let's update our main App too!
+
+```jsx
+// App.js
+class App extends React.Component {
+    render = () => {
+        return (
+            <div className="app-container">
+                ...
+                <div className="message-box">
+                    ...
+                </div>
+                <Message
+                    author="arjun"
+                    message="i love machine learning!"
+                    timestamp="01/25/20"
+                />
+            </div>
+        );
+    }
+}
+```
+
+![message component with props](images/message-component-props.png)
+
+It might not seem like it, but this now gives us very powerful tools to build a complex web app. But in order to do that, we'll need to introduce one more concept: **component state**.
+
+### React Fundamentals: state
+
+`props` lets us easily generate data that comes from outside of our component, but what about data in our component? That's what `state` is for. You can think of state as, well, the state of your app - a record of all important internal information your app (or system) needs to function.
+
+`this.state`, like `this.props`, is an object that stores data that our components can then access. The difference is in how state is changed.
+
+The first way you modify the app's state is in the constructor. This makes sense - you're creating an initial state to base your app off of.
+
+Let's take a look at the most commonly-used teaching example, a counter that increments each time a button is pressed. It's initial state should be `0`, so let's set it to that.
+
+```jsx
+class Counter extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            'count': 0
+        }
+    }
+    ...
+}
+```
+
+This is **the only time you should ever use `this.state = {...}`**. I'll explain why in a bit.
+
+But anyways, let's flesh out the rest of our counter.
+
+```jsx
+class Counter extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            'count': 0
+        }
+    }
+    render(){
+        <div>
+            current count: {this.state.count}
+            <button>click me!</button>
+        </div>
+    }
+}
+```
+
+This is where the magic happens:
+
+```jsx
+class Counter extends React.Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            count: 0
+        }
+    }
+    incrementCounter = () => {
+        this.setState({
+            count: this.state.count + 1
+        });
+    }
+    render(){
+        return (
+            <div>
+                current count: {this.state.count}
+                <button
+                    onClick={incrementCounter}
+                    >
+                    click me!
+                </button>
+            </div>
+        );
+    }
+}
+```
+
+Let's break down what's going on here!
+
 ...
+
+Component state is probably the most important core concept behind React, and understanding how to use it properly means that you're on your way to becoming a React wizard!
+
+### Why state and setState
 
 ## Appendix
 
@@ -725,6 +933,8 @@ https://reactjs.org/docs/introducing-jsx.html
 stuff on jsx
 
 #### React Render Function
+
+#### super (props)
 
 #### Create React App
 
