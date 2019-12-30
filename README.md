@@ -819,7 +819,7 @@ class App extends React.Component {
 
 It might not seem like it, but this now gives us very powerful tools to build a complex web app. But in order to do that, we'll need to introduce one more concept: **component state**.
 
-### React Fundamentals: state
+### React Fundamentals: state (conceptual)
 
 `props` lets us easily generate data that comes from outside of our component, but what about data in our component? That's what `state` is for. You can think of state as, well, the state of your app - a record of all important internal information your app (or system) needs to function.
 
@@ -844,6 +844,8 @@ class Counter extends React.Component{
 This is **the only time you should ever use `this.state = {...}`**. I'll explain why in a bit.
 
 But anyways, let's flesh out the rest of our counter.
+
+We'll render a button and the current count - note we can treat `this.state.count` in the same way that we've been doing props.
 
 ```jsx
 class Counter extends React.Component{
@@ -882,7 +884,7 @@ class Counter extends React.Component{
             <div>
                 current count: {this.state.count}
                 <button
-                    onClick={incrementCounter}
+                    onClick={this.incrementCounter}
                     >
                     click me!
                 </button>
@@ -894,11 +896,499 @@ class Counter extends React.Component{
 
 Let's break down what's going on here!
 
+### React Fundamentals: this.setState (conceptual)
+
+First, let's take a look at `incrementCounter()`:
+
+```js
+incrementCounter = () => {
+    this.setState({
+        count: this.state.count + 1
+    });
+}
+```
+
+This is a typical arrow function, which is properly binded to our class. It just does one thing: it calls `this.setState()`.
+
+`this.setState()` is a special function in React. Its default definition takes in one object, which in turn contains key-value pairs for states we want to update. Here, we want to update `count`, by incremeneting it by 1 from its previous value.
+
+When `this.setState()` is called, it selectively updates the entire app. **Only components that rely on states that were updated are re-rendered.** This can result in huge performance benefits, but also means that you have to think about how to efficiently design your app!
+
+Then, we have:
+
+```jsx
 ...
+<button
+    onClick={this.incrementCounter}
+>
+    click me!
+</button>
+```
+
+`onClick` is a certain type of event handler - when the element is clicked, it'll call a certain function; in this case, the one we wrote!
+
+A few other quick notes on state (though it's a huge topic [*](#more-on-state)):
+
+* **do not ever use `this.state = { }` outside the constructor**
+* `this.setState()` is actually an asynchronous function!
+* ideally, states should not be nested - for managing complex states, updating nested variables can be problematic ([*](#nested-state))
+* **do not ever use `this.state = { }` outside the constructor**
 
 Component state is probably the most important core concept behind React, and understanding how to use it properly means that you're on your way to becoming a React wizard!
 
-### Why state and setState
+### React Fundamentals: State and Component Generation
+
+Okay, enough with random counter examples. Let's actually implement what we want in our messages.
+
+First, let's see if we can generate our messages from the app's state (we'll add messages in a moment).
+
+```jsx
+// App.js
+class App extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            messages: [] // our default state is empty!
+        };
+    }
+    renderMessages = () => {
+        // check if there are no messages
+        // if there are no messages, let the user know!
+        if (this.state.messages.length === 0){
+            return (<div className="messages-container"> it's empty. why not say something? </div>);
+        }
+        // there are some messages!
+        let messages = [];
+        // this is a common way to loop through an array
+        // look up Array.forEach for more info!
+        this.state.messages.forEach((element, i) => {
+            messages.push(
+            <Message
+                key={i} // needed for procedurally generated components
+                author={element.author}
+                message={element.message}
+                timestamp={element.timestamp}
+            />
+            );
+        });
+        return (
+            <div className="messages-container">
+                {messages}
+            </div>
+        );
+    }
+    render = () => {
+        return (
+            <div className="app-container">
+                <header className="header-text">the hive</header>
+                <p>find out what's all the buzz!</p>
+                <hr />
+                <div className="message-box">
+                    <input 
+                        className="text-input"
+                        type="text"
+                        placeholder="your name..."
+                    />
+                    <input 
+                        className="text-input"
+                        type="text"
+                        placeholder="your message..."
+                    />
+                    <button className="send-button">
+                        Send Message
+                    </button>
+                </div>
+                {this.renderMessages()}
+            </div>
+        );
+    }
+}
+```
+
+and some CSS...
+
+```css
+/* App.css */
+.messages-container{
+  margin-top: 1em;
+}
+```
+
+For readability's sake, I've abstracted the rendering of messages to a function called `this.renderMessages()` - a common pattern in React. If we had more time, we might've made a few more components.
+
+Let's step through the changes we've made:
+
+```js
+// App.js
+constructor(props){
+    super(props);
+    this.state = {
+        messages: [] // our default state is empty!
+    };
+}
+```
+
+This is pretty simple, we're just creating one state variable (an array called `messages`), and setting it to be an empty array. Implicitly, each object in the array will represent one message - as we mentioned earlier, that means it must have an `author`, a `message`, and a `timestamp`.
+
+```js
+renderMessages = () => {
+    // check if there are no messages
+    // if there are no messages, let the user know!
+    if (this.state.messages.length === 0){
+        return (<div className="messages-container"> it's empty. why not say something? </div>);
+    }
+    // there are some messages!
+    let messages = [];
+    // this is a common way to loop through an array
+    this.state.messages.forEach((element, i) => {
+        messages.push(
+        <Message
+            key={i} // needed for procedurally generated components
+            author={element.author}
+            message={element.message}
+            timestamp={element.timestamp}
+        />
+        );
+    });
+    return (
+        <div className="messages-container">
+            {messages}
+        </div>
+    );
+}
+```
+
+A meaty function, but don't be scared! The comments explain some of the nuances, but our general idea is to loop through the `messages` state array, and create a new `<Message>` from the values of each item in the array! Then, we return the entire thing - which renders it in our `render()` function.
+
+```jsx
+render = () => {
+    return (
+        <div className="app-container">
+            ...
+            {this.renderMessages()}
+        </div>
+    );
+}
+```
+
+This just calls the `renderMessages()` function. We use `this` because it belongs to our class, and since it's Javascript (but returns JSX elements), we'll wrap it in `{}`.
+
+Your final result should look something like this:
+
+![the generated messages, but without any :(](images/generating-messages-messageless.png)
+
+But there isn't anything there! We'll allow users to input data in a moment, but for now let's just add some fake data.
+
+```js
+// App.js
+constructor(props){
+    super(props);
+    this.state = {
+        messages: [
+            {
+                author: "smallberg",
+                message: "do your CS31 homework!",
+                timestamp: "yesterday"
+            },
+            {
+                author: "matt",
+                message: "do people even read this?",
+                timestamp: "always"
+            }
+        ]
+    };
+}
+```
+
+You should get something like this:
+
+![now featuring manually generated messages!](images/generating-messages-manually.png)
+
+It's always good practice to test out components individually: we could've jumped straight ahead to implementing the chatbox, but then if we had an error we wouldn't know what caused it!!!
+
+Okay, we're almost done with React. Onto our last part.
+
+### React Fundamentals: State, Binding, and Event Handlers
+
+State can tie data to elements on the screen (like the messages that we just generated), but it can also tie elements on the screen to data we can manipulate!
+
+In our case, we want to listen in on the text inputs and the button submissions, so we can then create new messages!
+
+React gives us a handy way to do that with event listeners. Before I explain further, here's what it looks like in code:
+
+```jsx
+// App.js
+class App extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            messages: [],
+            author: "Anonymous",
+            message: ""
+        };
+    }
+    handleNameChange = e => {
+        this.setState({ author: e.target.value });
+    }
+
+    handleMessageChange = e => {
+        this.setState({ message: e.target.value });
+    }
+    ...
+    render = () => {
+        return (
+            <div className="app-container">
+                ...
+                <div className="message-box">
+                    <input
+                        className="text-input"
+                        type="text"
+                        value={this.state.author}
+                        onChange={this.handleAuthorChange}
+                    />
+                    <input
+                        className="text-input"
+                        type="text"
+                        value={this.state.message}
+                        onChange={this.handleMessageChange}
+                    />
+                    <button className="send-button">
+                        Send Message
+                    </button>
+                </div>
+                {this.renderMessages()}
+            </div>
+        );
+    }
+}
+```
+
+This is what's often called a "single source of truth" design pattern. In this case, our single source of truth is our state. The `value` of each input (i.e. what's in the text box) is whatever's in our state.
+
+And, when the input changes (through an event handler called `onChange`), it'll call some function (which we've specified) - that function then ends up changing the state, which changes the `value`. Unfortunately I'm slightly glossing over what `e` is, but the footnotes have more information ([*](#react-event-handlers)).
+
+There's a lot more to learn about event handlers, and they can be deceptively simple ([*](#react-event-handlers)).
+
+We are **so close** to being done. Now that we have the text inputs in our state, we can create new messages purely off of the state.
+
+To do that, let's create one more function, and call it when the button is clicked.
+
+```jsx
+// App.js
+createMessage = () => {
+    let newMessage = {
+        author: this.state.author,
+        message: this.state.message,
+        timestamp: getCurrentTimeString() // I'll deal with this in a moment, don't you worry!
+    };
+    let newMessages = this.state.messages;
+    newMessages.push(newMessage);
+    this.setState({
+        messages: newMessages
+    });
+}
+```
+
+This is pretty simple: we're creating a new message object from our existing state variables. Then, we added it to the end of the messages array (albeit in a rather inefficient way; I did this mostly for clarity).
+
+Finally, we just gotta make our button call this function.
+
+```jsx
+// App.js
+render = () => {
+    ...
+    <button
+        className="send-button"
+        onClick={this.createMessage}
+    >
+        Send Message
+    </button>
+    ...
+}
+```
+
+Pretty simple, just like our button counter example.
+
+Okay, and I promised I'd get to `getCurrentTimeString()`. This one isn't exciting, it just has to do with getting the date in a nice, human-readable form. Add this to your `App.js`:
+
+```jsx
+// App.js
+import React from 'react';
+import './App.css';
+import Message from './components/Message';
+
+const getCurrentTimeString = () => {
+  let currentdate = new Date();
+  return currentdate.getDate() + "/"
+    + (currentdate.getMonth()+1)  + "/"
+    + currentdate.getFullYear() + " at "  
+    + currentdate.getHours() + ":"  
+    + currentdate.getMinutes() + ":"
+    + currentdate.getSeconds();
+}
+
+class App extends React.Component {
+    ...
+}
+...
+```
+
+I've included a bit on the Javascript Date function in the footnotes ([*](#js-date)); but this is basically just copy-pasta.
+
+Okay, and voila! Everything should work!
+
+![the working self-contained app!!!](images/messages-done.png)
+
+You should pat yourself on the back - you've just covered some of the most important fundamentals of React, and in a very rushed manner! There's a lot more cool stuff to learn and do, but for now we'll take a quick breather and then move on to Firebase (and talk a slight bit more about React too).
+
+If you want a quick checkpoint, your JS code should look something like this:
+
+```jsx
+// App.js
+import React from 'react';
+import './App.css';
+import Message from './components/Message';
+
+const getCurrentTimeString = () => {
+  let currentdate = new Date();
+  return currentdate.getDate() + "/"
+    + (currentdate.getMonth()+1)  + "/" 
+    + currentdate.getFullYear() + " at "  
+    + currentdate.getHours() + ":"  
+    + currentdate.getMinutes() + ":" 
+    + currentdate.getSeconds();
+}
+
+class App extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+        messages: [],
+        author: "Anonymous",
+        message: "your message..."
+    };
+  }
+  handleAuthorChange = e => {
+    this.setState({ author: e.target.value });
+  }
+
+  handleMessageChange = e => {
+    this.setState({ message: e.target.value });
+  }
+  createMessage = () => {
+    let newMessage = {
+      author: this.state.author,
+      message: this.state.message,
+      timestamp: getCurrentTimeString()
+    };
+    let newMessages = this.state.messages;
+    newMessages.push(newMessage);
+    this.setState({
+      messages: newMessages
+    });
+  }
+  renderMessages = () => {
+      if (this.state.messages.length === 0){
+          return (<div className="messages-container"> it's empty. why not say something? </div>);
+      }
+      let messages = [];
+      this.state.messages.forEach((element, i) => {
+          messages.push(
+          <Message
+              key={i}
+              author={element.author}
+              message={element.message}
+              timestamp={element.timestamp}
+          />
+          );
+      });
+      return (
+          <div className="messages-container">
+              {messages}
+          </div>
+      );
+  }
+  render = () => {
+      return (
+          <div className="app-container">
+              <header className="header-text">the hive</header>
+              <p>find out what's all the buzz!</p>
+              <hr />
+              <div className="message-box">
+                  <input 
+                      className="text-input"
+                      type="text"
+                      value={this.state.author} 
+                      onChange={this.handleAuthorChange}
+                  />
+                  <input 
+                      className="text-input"
+                      type="text"
+                      value={this.state.message} 
+                      onChange={this.handleMessageChange}
+                  />
+                  <button 
+                    className="send-button" 
+                    onClick={this.createMessage}
+                  >
+                      Send Message
+                  </button>
+              </div>
+              {this.renderMessages()}
+          </div>
+      );
+  }
+}
+
+export default App;
+```
+
+```jsx
+// Message.js
+import React from 'react';
+import './Message.css';
+
+class Message extends React.Component {
+    render(){
+        let image = "https://api.adorable.io/avatars/64/" + this.props.author + ".png";
+        return (
+            <div className="message">
+                <div className="message-item">
+                    <img className="message-img" src={image} alt="profile pic" />
+                </div>
+                <div className="message-item">
+                    <p>
+                        <b>{this.props.author}</b> <span>{this.props.timestamp}</span>
+                    </p>
+                    <p>{this.props.message}</p>
+                </div>
+            </div>
+        );
+    }
+}
+
+export default Message;
+```
+
+## Integrating Cloud Firestore
+
+### Creating a Firebase Project
+
+### Setting Up Firestore
+
+### React Interlude: Component Lifecycles
+
+### Adding a Firestore Ref Listener
+
+### Pushing to Firestore
+
+## Quick Deploy: Heroku & CRA
+
+...
+
+## Ending Notes
+
+...
 
 ## Appendix
 
@@ -922,6 +1412,8 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/imp
 
 #### Webpack
 
+#### JS Date
+
 ### NodeJS
 
 ### More React
@@ -935,6 +1427,24 @@ stuff on jsx
 #### React Render Function
 
 #### super (props)
+
+#### more on state
+
+#### nested state
+
+#### event handlers
+
+So, I glossed over this:
+
+```jsx
+handleNameChange = e => {
+    this.setState({ author: e.target.value });
+}
+
+handleMessageChange = e => {
+    this.setState({ message: e.target.value });
+}
+```
 
 #### Create React App
 
