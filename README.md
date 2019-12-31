@@ -1372,9 +1372,115 @@ export default Message;
 
 ## Integrating Cloud Firestore
 
+Now our application has the most basic frontend features that we need (i.e. being able to create messages); however, it only works on our computer, and if we refresh the page, everything disappears. That doesn't make for a good chatroom!
+
+So, our next step is to somehow store and retrieve all of the messages that exist! To do that, we'll use Firebase's **Cloud Firestore** service, which gets rid of lots of the hassle that normally goes into the backend. 
+
+Let's get started!
+
 ### Creating a Firebase Project
 
-### Setting Up Firestore
+This section will walk you through setting up a Firebase Project.
+
+First, head to [firebase.google.com](https://firebase.google.com). After logging in, go to your projects page, and hit add project.
+
+![firebase projects page](images/create-project-1.png)
+
+Name your project whatever you want!
+
+![firebase name project page](images/create-project-2.png)
+
+For the sake of this tutorial, I won't enable Google Analytics (since it requires more setup). However, it's a useful tool if you're looking to explore!
+
+![firebase google analytics page](images/create-project-3.png)
+
+Once you finish that, your project should be all set up! But, we've got to do a bit more configuration: for the Firebase app, and for Firestore.
+
+### Registering a Firebase Web App
+
+Once you make your project, you'll probably be taken to a page like this. Hit the button to add a web application to your project.
+
+![firebase add application page](images/create-app-1.png)
+
+Once you're in the menu, we'll go through a few options, First, register your app with a nickname. It's not insanely important what it will be, but we'll use it in our configuration.
+
+In our case, we're not going to deploy/host with Firebase. However, it's a useful tool!
+
+![firebase register app page](images/create-app-2.png)
+
+Now, we're going to be taken to an "Add Firebase SDK" page. It'll give us some code that's actually a bit useful. Copy that code to your clipboard...
+
+![firebase web app config page](images/create-app-3.png)
+
+... and we'll modify it slightly to put it into our app! Make a new file called `src/lib/firebase.js`, and place this code into it:
+
+![screenshot of code for web app config](images/create-app-4.png)
+
+```js
+import firebase from 'firebase';
+
+const config = { // this is the same thing as `firebaseConfig`
+    apiKey: "AIzaSyBV6QuxKFGEpS0IRmlcTfYyvA8xw79thjQ",
+    authDomain: "qwer-hacks-2020.firebaseapp.com",
+    databaseURL: "https://qwer-hacks-2020.firebaseio.com",
+    projectId: "qwer-hacks-2020",
+    storageBucket: "qwer-hacks-2020.appspot.com",
+    messagingSenderId: "968678842798",
+    appId: "1:968678842798:web:f15f7c354f55f5e91d683f"
+};
+
+firebase.initializeApp(config);
+
+export default firebase;
+```
+
+Normally, you won't commit API keys to GitHub repos, but with Firebase things are a bit different - since your app is entirely in the frontend, there is no way to properly obscure the key. Firebase instead ensures secure data through its security rules ([*](#firebase-security-rules)).
+
+We'll get back to using this in a moment. For now, let's finish our Firestore setup!
+
+### Setting Up Cloud Firestore
+
+Head to the Cloud Firestore page in your project, and hit Create database.
+
+![cloud firestore page](images/setup-firestore-1.png)
+
+We can choose to run in test mode - at this point in our app, unauthorized access is unlikely, and things aren't going to spiral out of control. However, security rules are important ([*](#firebase-security-rules))!
+
+![firestore security mode page](images/setup-firestore-2.png)
+
+Next, we'll have to pick a data center location. Since we're in Los Angeles, I think anything `us-west` is probably your best bet.
+
+![firestore location page](images/setup-firestore-3.png)
+
+Cool, now our Firestore has been officially set up!
+
+However, we'll also create a bit of sample data, and give our data some structure.
+
+### Firestore Database Structure
+
+For now, our data use case is pretty simple. We can probably just store all of our messages in one data container (called a **collection** in Firestore), and perform operations there.
+
+However, this is not actually the best way to structure our data in the long term - but I'll talk about that in our [ending notes](#ending-notes).
+
+For now, let's create a collection with the start collection button.
+
+![database page](images/setup-firestore-4.png)
+
+We're going to give it an ID of `messages` (which is how we'll reference it in our code.)
+
+![create collections page](images/setup-firestore-5.png)
+
+Let's also create one piece of sample data - that way, we can know if our code works.
+
+Since each message in our app has three pieces of information (`author`, `message`, `timestamp`), it makes sense to structure our data similarly. In Firestore lingo, each individual data object is called a **document**.
+
+In order to make a sample message, hit create document in our `messages` collection. The actual data doesn't matter, but make sure it has the correct parameters!
+
+-- THIS SCREENSHOT IS OUTDATED --
+
+![cloud firestore page](images/setup-firestore-6.png)
+
+Cool cool cool! This is all the Firebase setup we'll need; we'll head back to it after we do some more React work.
 
 ### React Interlude: Component Lifecycles
 
@@ -1446,11 +1552,15 @@ handleMessageChange = e => {
 }
 ```
 
+https://reactjs.org/docs/handling-events.html
+
 #### Create React App
 
 https://github.com/facebook/create-react-app
 
 ### More Firebase
+
+#### Firebase Security Rules
 
 ### Server Languages
 
