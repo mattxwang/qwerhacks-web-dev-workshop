@@ -91,6 +91,7 @@ Next, open up your terminal application (Powershell on Windows, Terminal on OSX;
 ```sh
 $ npx create-react-app qwer-hacks
 $ cd qwer-hacks
+$ yarn add firebase
 $ npm start
 ```
 
@@ -98,6 +99,7 @@ What did we just do?
 
 * `npx create-react-app` is a command that creates a template application from [create-react-app](https://github.com/facebook/create-react-app), which is a project boilerplate commonly used for React apps ([*](#create-react-app)). It creates a folder (in this case, `qwer-hacks`), and installs a bunch of stuff in it!
 * `cd` is the terminal command that changes the folder you're in; here, we're entering the `qwer-hacks` folder that we just made.
+* ...
 * `npm start` tells Node to "start" our project. More info [in the appendix](#nodejs).
 
 After running `npm start`, you should get a message like this:
@@ -1179,7 +1181,7 @@ createMessage = () => {
     let newMessage = {
         author: this.state.author,
         message: this.state.message,
-        timestamp: getCurrentTimeString() // I'll deal with this in a moment, don't you worry!
+        timestamp: new Date().getTime() // I'll deal with this in a moment, don't you worry!
     };
     let newMessages = this.state.messages;
     newMessages.push(newMessage);
@@ -1209,7 +1211,9 @@ render = () => {
 
 Pretty simple, just like our button counter example.
 
-Okay, and I promised I'd get to `getCurrentTimeString()`. This one isn't exciting, it just has to do with getting the date in a nice, human-readable form. Add this to your `App.js`:
+Okay, and I promised I'd get to `timestamp: new Date().getTime()`. This one isn't exciting, it just has to do with getting the date in what's called a Unix timestamp, which is how many milliseconds has passed since Jan 1, 1970 GMT. You can imagine that it's easier to do it this way than to deal with timezones, and it makes some math easier.
+
+Add this to your `App.js`; I won't explain too much of it, but it just has to do with date manipulation - nothing spicy. Footnotes ([*](#js-date)) has more info!
 
 ```jsx
 // App.js
@@ -1217,18 +1221,41 @@ import React from 'react';
 import './App.css';
 import Message from './components/Message';
 
-const getCurrentTimeString = () => {
-  let currentdate = new Date();
-  return currentdate.getDate() + "/"
-    + (currentdate.getMonth()+1)  + "/"
-    + currentdate.getFullYear() + " at "  
-    + currentdate.getHours() + ":"  
-    + currentdate.getMinutes() + ":"
-    + currentdate.getSeconds();
+const getTimeString = timestamp => {
+    let date = new Date(timestamp);
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    let hour = date.getHours();
+    let min = date.getMinutes();
+    let sec = date.getSeconds();
+
+    // 0 padding!
+    month = (month < 10 ? "0" : "") + month;
+    day = (day < 10 ? "0" : "") + day;
+    hour = (hour < 10 ? "0" : "") + hour;
+    min = (min < 10 ? "0" : "") + min;
+    sec = (sec < 10 ? "0" : "") + sec;
+
+    let str = hour + ":" + min + ":" + sec + " on " + month + "/" + day + "/" + date.getFullYear();
+    return str;
 }
 
 class App extends React.Component {
     ...
+    renderMessages = () => {
+      ...
+      this.state.messages.forEach((element, i) => {
+          messages.push(
+          <Message
+              key={i}
+              author={element.author}
+              message={element.message}
+              timestamp={getTimeString(element.timestamp)} // changed this!
+          />
+          );
+      });
+      ...
+  }
 }
 ...
 ```
@@ -1249,14 +1276,23 @@ import React from 'react';
 import './App.css';
 import Message from './components/Message';
 
-const getCurrentTimeString = () => {
-  let currentdate = new Date();
-  return currentdate.getDate() + "/"
-    + (currentdate.getMonth()+1)  + "/" 
-    + currentdate.getFullYear() + " at "  
-    + currentdate.getHours() + ":"  
-    + currentdate.getMinutes() + ":" 
-    + currentdate.getSeconds();
+const getTimeString = timestamp => {
+    let date = new Date(timestamp);
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    let hour = date.getHours();
+    let min = date.getMinutes();
+    let sec = date.getSeconds();
+
+    // 0 padding!
+    month = (month < 10 ? "0" : "") + month;
+    day = (day < 10 ? "0" : "") + day;
+    hour = (hour < 10 ? "0" : "") + hour;
+    min = (min < 10 ? "0" : "") + min;
+    sec = (sec < 10 ? "0" : "") + sec;
+
+    let str = hour + ":" + min + ":" + sec + " on " + month + "/" + day + "/" + date.getFullYear();
+    return str;
 }
 
 class App extends React.Component {
@@ -1298,7 +1334,7 @@ class App extends React.Component {
               key={i}
               author={element.author}
               message={element.message}
-              timestamp={element.timestamp}
+              timestamp={getTimeString(element.timestamp)}
           />
           );
       });
@@ -1480,13 +1516,173 @@ In order to make a sample message, hit create document in our `messages` collect
 
 ![cloud firestore page](images/setup-firestore-6.png)
 
-Cool cool cool! This is all the Firebase setup we'll need; we'll head back to it after we do some more React work.
+Cool cool cool! This is all the Firebase setup we'll need!
+
+Our next goal is to connect our Firestore database and our front-end. In particular, we want the database to keep track of all sent messages, and every time a message is sent from a client, it goes to the database.
+
+In a more technical sense, we need two types of data flows to our database: Create (i.e. creating a message), and Read (i.e. reading all messages). This is part of a broader model called CRUD ([*](#crud)).
+
+We'll get into that in a moment, but first, we've got to learn a bit more about React, asynchronous programming, and component lifecycles.
+
+### Programming Interlude: Async and Listeners
+
+Before I go on a ramble about Component Lifecycles, I want to talk about why we might need them.
+
+Often times, we'll want to get a resource (like an image, or a game download, or data from a database). Since this resource doesn't come instantaneously, we'll perform it **asynchronously** - a fancy word for doing other things while we wait to get our information.
+
+Asynchronous programming can definitely be a headache ([*](#async)), and I won't be able to cover everything you need to know about it here. Today though, I'll introduce one asynchronous construct: **event listeners**.
+
+Let's say you're making a chat app. How will you know if any user gets new messages? You could check in with the server every x seconds and check if there are any updates. However, that sounds a bit inefficient, and a bit inelegant.
+
+Instead, we could tell the server to send the client a ping every time there's a new message; that sounds a lot simpler! This design pattern is exactly what an event listener is: our client is **listening** for **events**, which are actions that happen outside the scope of our client.
+
+We actually saw events in action earlier when we were adding event handlers to our input buttons!
+
+If this entire section didn't make too much sense, don't worry too much - it's mostly a background on why we're using component lifecycles - but I encourage you to check out the appendix on [async](#async) and [events](#events).
 
 ### React Interlude: Component Lifecycles
 
+There is a bit of information that I left out of our chat app. In particular, how does the server know when the client's using the app, or logged-in, or not connected to the internet? We shouldn't be sending messages to a client that's not listening!
+
+One easy way to solve this is to slightly change our model:
+
+* when the user starts using the app, tell the database to start sending messages
+* then, the database sends messages to the client
+* when the user exists the client, tell the database to stop sending messages
+
+Cool! But how can we know if the user's using the app? We can use React's **Component Lifecycles**.
+
+Component Lifecycles are special functions that are called when certain things happen to our app. Today, we'll use probably the two most common ones: `componentDidMount()` and `componentWillUnmount()`.
+
+`componentDidMount()` runs **immediately after our component has been added to our web page** (well, "rendered to the DOM"). In other words, it runs when the user first opens our component/app.
+
+`componentWillUnmount()` runs **immediately before our component will be removed from our web page** (well, "removed from the DOM"). In other words, it'll run right before the user closes our component/app.
+
+A quick pseudo-JS example:
+
+```jsx
+class MessageApp extends React.Component {
+    constructor(props){...}
+    componentDidMount = () => {
+        startListeningForMessages();
+    }
+    componentWillUnmount = () => {
+        stopListeningForMessages();
+    }
+    render = () => { ... }
+}
+```
+
+If this blurb was a bit confusing, check out [the appendix on component lifecycles](#component-lifecycles) for more info.
+
 ### Adding a Firestore Ref Listener
 
+Now that we've done all of that, let's put that into action.
+
+First, we'll import the `lib/firebase.js` file we previously made:
+
+```jsx
+// App.js
+import React from 'react';
+import './App.css';
+import Message from './components/Message';
+import firebase from './lib/firebase.js';
+```
+
+Now, we'll have access to the `firebase` object, which we'll use heavily.
+
+First, let's add our `componentDidMount`:
+
+```jsx
+// App.js
+class App extends React.Component {
+    ...
+    componentDidMount = () => {
+        this.db = firebase.firestore();
+        this.unsubscribe = this.db.collection("messages")
+        .orderBy("timestamp", "desc").onSnapshot((collection) => {
+            let newMessagesList = [];
+            collection.forEach(function(doc){
+                let message = doc.data();
+                let newMessage = {
+                author: message.author,
+                message: message.message,
+                timestamp: message.timestamp
+                }
+                newMessagesList.push(newMessage);
+            });
+            this.setState({
+                messages: newMessagesList
+            });
+        });
+    }
+}
+```
+
+...
+
+Now, it should already render our pre-created message!
+
+![messages view pulling from firestore](images/firestore-componentdidmount.png)
+
+But, we're not done yet. As we discussed, we need to tell firestore to stop listening (which is called "unsubscribing"). Luckily, Firebase makes this very easy for us:
+
+```jsx
+// App.js
+class App extends React.Component {
+    ...
+    componentDidMount = () => {
+        ...
+    }
+    componentWillUnmount = () => {
+        this.unsubscribe();
+    }
+    ...
+}
+```
+
+And that's it! Our app now renders everything from the Firestore. You can test this by adding more test data from the Firebase console.
+
 ### Pushing to Firestore
+
+We're almost almost done! The last thing we want to do is change our `createMessage()` function to also push this new message to firebase.
+
+```jsx
+// App.js
+class App extends React.Component {
+    ...
+    createMessage = () => {
+        let newMessage = {
+            author: this.state.author,
+            message: this.state.message,
+            timestamp: new Date().getTime()
+        };
+        let newMessages = this.state.messages;
+        newMessages.push(newMessage);
+        this.setState({
+            messages: newMessages
+        });
+        // adding this
+        this.db.collection("messages").add(newMessage)
+        .then(function(docRef) {
+            console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function(error) {
+            console.error("Error adding document: ", error);
+        });
+    }
+}
+```
+
+...
+
+![app after message is added](images/firestore-add-message.png)
+
+Let's check our console to verify that this worked:
+
+![firebase console verifying message was added](images/firestore-add-message-console.png)
+
+Nice! Life's pretty good then :)
 
 ## Quick Deploy: Heroku & CRA
 
@@ -1519,6 +1715,29 @@ https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/imp
 #### Webpack
 
 #### JS Date
+
+What was going on in this function?
+
+```js
+const getTimeString = timestamp => {
+    let date = new Date(timestamp);
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    let hour = date.getHours();
+    let min = date.getMinutes();
+    let sec = date.getSeconds();
+
+    // 0 padding!
+    month = (month < 10 ? "0" : "") + month;
+    day = (day < 10 ? "0" : "") + day;
+    hour = (hour < 10 ? "0" : "") + hour;
+    min = (min < 10 ? "0" : "") + min;
+    sec = (sec < 10 ? "0" : "") + sec;
+
+    let str = hour + ":" + min + ":" + sec + " on " + month + "/" + day + "/" + date.getFullYear();
+    return str;
+}
+```
 
 ### NodeJS
 
@@ -1554,6 +1773,13 @@ handleMessageChange = e => {
 
 https://reactjs.org/docs/handling-events.html
 
+#### hooks
+
+#### component lifecycles
+
+https://reactjs.org/docs/state-and-lifecycle.html#adding-lifecycle-methods-to-a-class
+
+
 #### Create React App
 
 https://github.com/facebook/create-react-app
@@ -1565,6 +1791,10 @@ https://github.com/facebook/create-react-app
 ### Server Languages
 
 ### Databases
+
+#### SQL vs noSQL
+
+#### CRUD
 
 ### MV Frameworks
 
@@ -1579,3 +1809,7 @@ Mention plugins (like Flash, Silverlight), web assembly, etc.
 ### SPA
 
 ### DRY
+
+### async
+
+### events

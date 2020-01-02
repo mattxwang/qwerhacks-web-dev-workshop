@@ -1,16 +1,29 @@
 .app-container {
   background-color: #282c34;
+  font-size: 16px;
   min-height: calc(100vh - 2em);
-  font-size: calc(10px + 2vmin);
   color: white;
   padding: 1em;
 }
-
 .header-text{
   font-size: 2em;
   font-weight: bold;
 }
-
 .text-input{
   margin-right: 1em;
+  padding: 0.5em;
+  border: 4px solid white;
+  border-radius: 4px;
+  font-size: 1em;
+}
+.send-button {
+  padding: 0.5em;
+  background-color: #AED643;
+  border: 4px solid #AED643;
+  border-radius: 4px;
+  color: black;
+  font-size: 1em;
+}
+.messages-container{
+  margin-top: 1em;
 }
