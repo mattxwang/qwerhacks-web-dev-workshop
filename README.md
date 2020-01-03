@@ -1759,7 +1759,7 @@ You'll have to give your project a unique name that nobody else has taken. I've 
 
 Now, you'll be on this page:
 
-![heroku deploy instructions](images/heroku-deployoment-instructions.png)
+![heroku deploy instructions](images/heroku-deployment-instructions.png)
 
 There are some instructions there, but I'll sum it up:
 
