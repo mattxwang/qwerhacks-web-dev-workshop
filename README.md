@@ -30,7 +30,7 @@ If you've heard of "front-end" or "back-end" web development, it usually boils d
 
 The **client**, or the front-end, is what runs on the user's computer (or other device). It's responsible for creating whatever the user sees (e.g. the interface for a web page, a mobile app, or a video game).
 
-For web applications in particular, the client is the user's web browser (like Chrome, Firefox, or Safari). Browsers themselves run code that some developer (like you!) has written, usually in HTML, CSS, and Javascript ([*](#browser-languages)). As we write some code, I'll expand a bit more on what these are; I've also included appendix entries for [HTML](#html), [CSS](#css), and [JS](#js).
+For web applications in particular, the client is the user's web browser (like Chrome, Firefox, or Safari). Browsers themselves run code that some developer (like you!) has written, usually in HTML, CSS, and Javascript ([*](#browser-languages)). Very briefly: HTML defines the structure of our website, CSS defines how it looks, and JS adds any functionality. As we write some code, I'll expand a bit more on what these are; I've also included appendix entries for [HTML](#html), [CSS](#css), and [JS](#js).
 
 Some apps can run entirely as front-end applications (meaning that after the user downloads it, the app is entirely self-contained). Examples include simple text editors or single-player video games!
 
@@ -74,7 +74,7 @@ React is one of many MVC/MV* frameworks; I talk a bit more about what that means
 
 [Firebase](https://firebase.google.com) is a "comprehensive app development platform" designed to make developers' lives easier. Specifically, it implements a lot of common back-end functionalities for you (like database management, user authentication, analytics, hosting, monitoring, and testing).
 
-Today, we'll use **Cloud Firestore**, which is a database scheme and manager provided by Firebase. It simplifies a huge (and I really mean *huge*) part of making apps. 
+Today, we'll use **Cloud Firestore**, which is a database scheme and manager provided by Firebase. It simplifies a huge (and I really mean *huge*) part of making apps.
 
 For us, Firebase itself will manage deploying and hosting the server; we'll use Firebase's Javascript library to communicate with that server. Later on in the workshop, I'll walk you through how to set up a Firebase app.
 
@@ -91,7 +91,7 @@ Next, open up your terminal application (Powershell on Windows, Terminal on OSX;
 ```sh
 $ npx create-react-app qwer-hacks
 $ cd qwer-hacks
-$ yarn add firebase
+$ npm install firebase --save
 $ npm start
 ```
 
@@ -99,7 +99,7 @@ What did we just do?
 
 * `npx create-react-app` is a command that creates a template application from [create-react-app](https://github.com/facebook/create-react-app), which is a project boilerplate commonly used for React apps ([*](#create-react-app)). It creates a folder (in this case, `qwer-hacks`), and installs a bunch of stuff in it!
 * `cd` is the terminal command that changes the folder you're in; here, we're entering the `qwer-hacks` folder that we just made.
-* ...
+* `npm install firebase --save` installs the node library for firebase, which we'll use later on to interact with Cloud Firestore
 * `npm start` tells Node to "start" our project. More info [in the appendix](#nodejs).
 
 After running `npm start`, you should get a message like this:
@@ -548,7 +548,7 @@ Cool cool cool! I think we're now ready to design our messages, and really get i
 
 ## React Fundamentals
 
-### Why Components?
+### Why Components
 
 One of the biggest concepts in software engineering is DRY, or don't repeat yourself - there are lots of good reasons why ([*](#dry)). If code or functionality would be duplicated many times, we'll abstract it away: with classes, functions, or in our case, components.
 
@@ -560,7 +560,7 @@ That sounds like a lot of work, but you'll have to trust me on why this is usefu
 
 ![example of a facebook post, taken from ACM Hack](images/fbpost.png)
 
-*image shamelessly taken from ACM Hack*
+(*image shamelessly taken from ACM Hack*)
 
 If you want more convincing, you can look at [the appendix](#more-react).
 
@@ -620,8 +620,6 @@ class App extends React.Component {
         );
     }
 }
-
-...
 ```
 
 ![adding the message component to our app](images/sample-message-unstyled.png)
@@ -919,7 +917,6 @@ When `this.setState()` is called, it selectively updates the entire app. **Only 
 Then, we have:
 
 ```jsx
-...
 <button
     onClick={this.incrementCounter}
 >
@@ -957,7 +954,7 @@ class App extends React.Component {
         // check if there are no messages
         // if there are no messages, let the user know!
         if (this.state.messages.length === 0){
-            return (<div className="messages-container"> it's empty. why not say something? </div>);
+            return (<div className="messages-container"> nothing here! why not say something? </div>);
         }
         // there are some messages!
         let messages = [];
@@ -1037,7 +1034,7 @@ renderMessages = () => {
     // check if there are no messages
     // if there are no messages, let the user know!
     if (this.state.messages.length === 0){
-        return (<div className="messages-container"> it's empty. why not say something? </div>);
+        return (<div className="messages-container"> nothing here! why not say something? </div>);
     }
     // there are some messages!
     let messages = [];
@@ -1325,7 +1322,7 @@ class App extends React.Component {
   }
   renderMessages = () => {
       if (this.state.messages.length === 0){
-          return (<div className="messages-container"> it's empty. why not say something? </div>);
+          return (<div className="messages-container"> nothing's here! why not say something? </div>);
       }
       let messages = [];
       this.state.messages.forEach((element, i) => {
@@ -1512,8 +1509,6 @@ Since each message in our app has three pieces of information (`author`, `messag
 
 In order to make a sample message, hit create document in our `messages` collection. The actual data doesn't matter, but make sure it has the correct parameters!
 
--- THIS SCREENSHOT IS OUTDATED --
-
 ![cloud firestore page](images/setup-firestore-6.png)
 
 Cool cool cool! This is all the Firebase setup we'll need!
@@ -1605,9 +1600,9 @@ class App extends React.Component {
             collection.forEach(function(doc){
                 let message = doc.data();
                 let newMessage = {
-                author: message.author,
-                message: message.message,
-                timestamp: message.timestamp
+                    author: message.author,
+                    message: message.message,
+                    timestamp: message.timestamp
                 }
                 newMessagesList.push(newMessage);
             });
@@ -1619,11 +1614,55 @@ class App extends React.Component {
 }
 ```
 
-...
-
 Now, it should already render our pre-created message!
 
 ![messages view pulling from firestore](images/firestore-componentdidmount.png)
+
+Wow, that was lots of confusing code. Let me quickly break down portions of it:
+
+```js
+// App.js
+this.db = firebase.firestore();
+```
+
+This line creates (and in this specific line, initializes) `this.db` as a reference to our firestore database. More info in the Firebase docs (in the [appendix](#more-firebase)).
+
+```js
+// App.js
+this.unsubscribe = this.db.collection("messages")
+.orderBy("timestamp", "desc").onSnapshot((collection) => {
+    ...
+}
+```
+
+Wow, quite a bit here. We're setting `this.unsubscribe` to the value of some function, which ends up being an unsubscriber function for the listener - any `.onSnapshot` call returns a function to stop the listener. Later, we'll call `this.unsubscribe()` to close the event listener.
+
+Then, we do some stuff to our database: we look at the collection `messages` (which if you remember, we created in our setup) and are ordering it by the `timestamp` key. Traditionally, you want the latest posts to come first; since `timestamp` is a number (that represents the # of milliseconds since Jan 1, 1970), the larger numbers happened later, so we'll order it in descending order.
+
+Now, we have `.onSnapshot()`, which is a function that takes a function as a parameter. It'll call this function every time the snapshot is updated (i.e. the collection's items change), and will pass in a firebase collection object. In our case, we've named the input `collection`, to make our life easier.
+
+```js
+// App.js
+.orderBy("timestamp", "desc").onSnapshot((collection) => {
+    let newMessagesList = [];
+    collection.forEach(function(doc){
+        let message = doc.data();
+        let newMessage = {
+            author: message.author,
+            message: message.message,
+            timestamp: message.timestamp
+        }
+        newMessagesList.push(newMessage);
+    });
+    this.setState({
+        messages: newMessagesList
+    });
+}
+```
+
+This final bit is pretty self-explanatory: we loop through the collection (treating it like an array), and for each item in the collection (which if you remember, is a message), we pull out the relevant information, and add it to an array. Once we're done, we update our state to the new array - loading in all of our values!
+
+This was a bit hand-wavy (you had to trust me on what the functions did); I encourage you to read the [appendix](#collections-and-iterating).
 
 But, we're not done yet. As we discussed, we need to tell firestore to stop listening (which is called "unsubscribing"). Luckily, Firebase makes this very easy for us:
 
@@ -1674,8 +1713,6 @@ class App extends React.Component {
 }
 ```
 
-...
-
 ![app after message is added](images/firestore-add-message.png)
 
 Let's check our console to verify that this worked:
@@ -1684,15 +1721,136 @@ Let's check our console to verify that this worked:
 
 Nice! Life's pretty good then :)
 
+What's going on? If the above example on the event listener made sense, then hopefully this block of code does too.
+
+```js
+this.db.collection("messages").add(newMessage)
+.then(function(docRef) {
+    console.log("Document written with ID: ", docRef.id);
+})
+.catch(function(error) {
+    console.error("Error adding document: ", error);
+});
+```
+
+The `.add` function adds some Javascript object to the `messages` collection, which is the behaviour we want. The `.then` and `.catch` are a promise and try-catch respectively; they're a deceptively simple topic to understand, and I've included appendix links to explain both [Javascript promises](#js-promises) and [try-catch in Javascript](#js-try-catch)
+
+But seriously, we're all done! We've completed our entire app: a front-end (that looks alright) built in React (and using JSX + CSS), and an interface to our Cloud Firestore back-end.
+
+You should pat yourself on the back - this was a lot of content, and you either had to listen to me talk about it for an hour (pretty bad), read this entire document (even worse), or both (absolutely the worst option out of the three). I really appreciate you taking the time to do this, and I hope you learned something!
+
 ## Quick Deploy: Heroku & CRA
+
+Hah, you thought we were done. Turns out there's one more step!
+
+Right now, you can view your app on your own computer. You could distribute it to other people by making them download and run your code, but that's lots of work! Instead, it'd be way more convenient if you could just show it to people as a website.
+
+So, let's do exactly that.
+
+There are [deployment options available](#deployment-options), but today I'll quickly walk you through how to do this on Heroku, which is one (free-to-start) provider of a variety of web services (that usually fall under the realm of "DevOps").
+
+First, head to [Heroku's website (https://www.heroku.com/)](https://www.heroku.com/), and sign up for an account. You don't need a credit card or anything to use it!
+
+After you sign up for an account, you'll be on your dashboard. We'll create a new project - hit the new button, and create a new app.
+
+![heroku create app page](images/heroku-create-app.png)
+
+You'll have to give your project a unique name that nobody else has taken. I've taken `qwer-hacks-2020`, sorry about that :/. This name is a bit important, since it decides the URL for your project!
+
+Now, you'll be on this page:
+
+![heroku deploy instructions](images/heroku-deployoment-instructions.png)
+
+There are some instructions there, but I'll sum it up:
+
+First, install the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-command-line)
+
+Then, you'll run quite a few terminal commands:
+
+```sh
+# first, go to your project directory.
+$ cd my-project/
+# we'll create an empty git repository here
+$ git init
+# we're creating a heroku remote. this command does a lot under the hood!
+$ heroku git:remote -a qwer-hacks-2020
+# this is getting our files ready to push. '.' means all files
+$ git add .
+# add a nice message for your changes!
+$ git commit -am "learning web development!"
+# "push" our changes to heroku
+$ git push heroku master
+...
+```
+
+Then, it'll handle everything. The first time you do this, it'll take a bit of time, but it'll eventually tell you when your project is ready.
+
+For example, here's what I got:
+
+```sh
+$ git push heroku master
+...
+remote: -----> Compressing...
+remote:        Done: 88.9M
+remote: -----> Launching...
+remote:        Released v3
+remote:        https://qwer-hacks-2020.herokuapp.com/ deployed to Heroku
+```
+
+Great! We can visit [https://qwer-hacks-2020.herokuapp.com/](https://qwer-hacks-2020.herokuapp.com/) to check out the project!
+
+Then, every time you make changes to your project, you just need to run these three commands again:
+
+```sh
+$ git add .
+$ git commit -am "making more awesome changes!"
+$ git push heroku master
+```
+
+Cool cool! Now you can show your friends your awesome web app!
+
+## Ending Notes
+
+Great, so we built our chatroom. I want to highlight a few skills that you (hopefully) learned, a few caveats about what I talked about, and what's ahead in the road.
+
+### Topic Review
+
+First, what did we learn?
+
+* high-level web development concepts: client-server model, front-end vs. back-end, HTML, CSS, JS
+* installing and running node projects with `npm`
+* overview of React/ES6-related JS fundamentals:
+    * `this`
+    * arrow functions
+    * classes (including constructors and properties)
+    * `import`
+* what React is, and how to use it:
+    * what React components are and why they're useful
+    * creating custom components
+    * the `render()` function and JSX
+    * `props`
+    * `state` and `this.setState()`
+    * component lifecycles
+* what Firebase is, what Firestore is, and how to use it:
+    * setting up a Firebase Project & App
+    * setting up Cloud Firestore
+    * editing data in the database console
+    * (briefly) using the `firebase` node library
+    * implementing an event listener
+    * implementing a create event
+* briefly deploying our project with Heroku
+
+### Further Work/Learning
 
 ...
 
-## Ending Notes
+### Some Caveats
 
 ...
 
 ## Appendix
+
+Here are more links (and brief explanations) on where you can learn more about the stuff that's covered in this workshop.
 
 ### HTML
 
@@ -1738,6 +1896,11 @@ const getTimeString = timestamp => {
     return str;
 }
 ```
+
+
+#### JS Promises
+
+#### JS Try Catch
 
 ### NodeJS
 
@@ -1788,6 +1951,8 @@ https://github.com/facebook/create-react-app
 
 #### Firebase Security Rules
 
+#### Collections and Iterating
+
 ### Server Languages
 
 ### Databases
@@ -1797,6 +1962,8 @@ https://github.com/facebook/create-react-app
 #### CRUD
 
 ### MV Frameworks
+
+### Deployment Options
 
 ## Extra Footnotes
 
