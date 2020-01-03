@@ -1842,6 +1842,8 @@ First, what did we learn?
 
 ### Further Work/Learning
 
+I included two slides in the workshop on further things you can do
+
 ...
 
 ### Some Caveats
@@ -1980,3 +1982,19 @@ Mention plugins (like Flash, Silverlight), web assembly, etc.
 ### async
 
 ### events
+
+## Other Web Development Things
+
+Here are some cool things that Matt thinks you should explore.
+
+* Typescript: Javascript, but with explicit static typing!
+* SASS: CSS, but with more useful features
+* Jekyll: Static Site Building (for blogs, conference websites, etc.)
+* Jest + Enzyme: a common JS testing framework for React Apps
+* Continuous Integration: automate testing, building, deployment. options include Travis CI, AppVeyor, Circle CI, GitHub Actions, etc.
+
+## Copyright
+
+This entire workshop is under the MIT License, so basically you can do whatever you want. Have fun!
+
+(however, if you do use these workshop materials, I'd appreciate it if you let me know! shoot me an email at [matt@matthewwang.me](mailto:matt@matthewwang.me))
