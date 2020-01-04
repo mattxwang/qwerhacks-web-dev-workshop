@@ -131,15 +131,7 @@ One convenient thing is that `create-react-app` automatically refreshes your pag
 
 Now, let's jump into React. The splash tells us to edit `src/App.js`, so let's do that!
 
-Open up `src/App.js`:
-
-![original src/App.js](images/original-app-js.png)
-
-And change it to this:
-
-![makes App.js class-based](images/class-app-js.png)
-
-Here's the code, if you prefer to copy-paste it (you don't have to copy the comments, which are `//`):
+Open up `src/App.js`, and change it to this (you don't have to copy the comments, which are `//`):
 
 ```jsx
 // App.js
@@ -327,7 +319,7 @@ The `{logo}` tells React to use the variable `logo`, which if you remember, is t
 Here's another quick example:
 
 ```jsx
-...
+... TODO MATT PLEASE DO
 ```
 
 A few tidbits:
