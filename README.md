@@ -400,10 +400,33 @@ For example, note this line:
 
 The `{logo}` tells React to use the variable `logo`, which if you remember, is the image we imported at the top of the file! You can't do stuff like this in HTML, which makes JSX very powerful! The general idea is that anything in braces (`{}`) is processed as Javascript, rather than raw HTML.
 
-Here's another quick example:
+Here are a few other quick examples that demonstrate some basic JSX features:
 
 ```jsx
-... TODO MATT PLEASE DO
+// {} evaluates Javascript inside of it. it must be an expression of some sort
+
+// JSX
+<div>{ 2 + 2 }</div>
+
+// outputted HTML
+<div>4</div>
+
+// you can use variables and other expressions that are in scope
+// we'll see better examples of this later
+
+let someText = "hello world!";
+
+// JSX
+<div>{someText}</div>
+...
+someText = "goodbye world";
+...
+<div>{someText}</div>
+
+// outputted HTML
+<div>hello world!</div>
+...
+<div>goodbye world</div>
 ```
 
 A few tidbits:
