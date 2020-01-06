@@ -1920,11 +1920,11 @@ First, what did we learn?
 
 I included two slides in the workshop on further things you can do
 
-...
+TODO
 
 ### Some Caveats
 
-...
+TODO
 
 ## Appendix
 
@@ -2162,21 +2162,62 @@ If you want to transition your project off of create-react-app, you can [eject o
 
 ### More Firebase
 
+Firebase has lots of features that we didn't cover at all! It's a product, so naturally [their homepage](https://firebase.google.com/) does a good job of selling their features.
+
+We also didn't cover Cloud Firestore in-depth. [The docs](https://firebase.google.com/docs/firestore/) are a good place to start, and [the quickstart](https://firebase.google.com/docs/firestore/quickstart) gives you a flyover view of what Firestore is and how it works. There's also [a sample app](https://firebase.google.com/docs/firestore/client/samples-web) that demonstrates all the common web-app uses of Firestore.
+
+Firebase has another database model called the Realtime Database. [This article](https://firebase.google.com/docs/firestore/rtdb-vs-firestore) does a good job of comparing the two (though it does slant to Firestore, since it's the newer, more commercialized product).
+
 #### Firebase Security Rules
+
+We didn't talk about this at all, but if you want to use a Firebase in production you should definitely look at [Security Rules](https://firebase.google.com/docs/firestore/security/overview); you'll notice that we didn't use any form of database authentication, and this is one way you can do that with Firebase.
 
 #### Collections and Iterating
 
+Some of the most important concepts in databases is how data is stored and how to query it. For the former, check out the [data model explanation](https://firebase.google.com/docs/firestore/data-model) and for the latter, the documentation on [querying](https://firebase.google.com/docs/firestore/query-data/queries) and [ordering](https://firebase.google.com/docs/firestore/query-data/order-limit-data) the data is relevant.
+
 ### Server Languages
+
+Almost any language has its own server implementation and accompanying web framework! Here are a few (some of them are more than just servers):
+
+* Python: try [Flask](https://www.palletsprojects.com/p/flask/) or [Django](https://www.djangoproject.com/)
+* JS/Node: try [Express](https://expressjs.com/)
+* Go: try ... Go (and [net.http](https://golang.org/pkg/net/http/))
+* Java: try Servlets
+* C++: try [TreeFrog](https://www.treefrogframework.org/) or [Pistache](http://pistache.io/) (just REST)
+
+You can also just google "LANGUAGE server" or "LANGUAGE web framework" and you'll usually find something.
 
 ### Databases
 
+Databases are a super important part of creating applications, and we basically didn't talk about them. I could definitely ramble about them for a long time, but I think [this DigitalOcean article](https://www.digitalocean.com/community/tutorials/understanding-sql-and-nosql-databases-and-different-database-models) is a good start.
+
+Again, lots and lots to cover; if it's something you're interested in, definitely look for more information online!
+
 #### SQL vs noSQL
+
+Just going to drop [the DigitalOcean article](https://www.digitalocean.com/community/tutorials/understanding-sql-and-nosql-databases-and-different-database-models) article again. Not too in-depth, but this entire database appendix isn't.
 
 #### CRUD
 
+CRUD is a common set of operations that databases and APIs can perform. [This codecademy article](https://www.codecademy.com/articles/what-is-crud) is a good start, but it's not super important vocabulary.
+
 ### MV Frameworks
 
+React isn't exactly a MV* (model-view-something) framework, though it fulfills many of the same needs as them. The most common type of MV* is the Model-View-Controller framework ([here's the Wikipedia page](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)), but there are other similar frameworks (which is why people say MV*). Other common front-end JS frameworks include [Angular](https://angular.io/), [Vue](https://vuejs.org/), and [Ember](https://emberjs.com/).
+
+One useful site that I've recommended people is [TodoMVC](http://todomvc.com/), which builds a simple todo app in many different MV* frameworks. It can help you see what an app might look like on a surface-level, and let you know what's out there in the big wide world.
+
 ### Deployment Options
+
+There are a lot of ways you can deploy an app. Here are a few of my favourites (all of which are free to some extent):
+
+* Heroku ([Heroku tutorial link](https://devcenter.heroku.com/articles/deploying-nodejs), [CRA tutorial link](https://create-react-app.dev/docs/deployment/#heroku))
+* Firebase ([firebase tutorial link](https://firebase.google.com/docs/hosting/deploying), [CRA tutorial link](https://create-react-app.dev/docs/deployment/#firebase))
+* GitHub Pages ([CRA tutorial link](https://create-react-app.dev/docs/deployment/#github-pages))
+* Netlify ([CRA tutorial link](https://create-react-app.dev/docs/deployment/#netlify))
+
+I will say, Heroku sleeps your app if it's inactive for a certain period of time. If you want a free production deploy, I wouldn't use Heroku if instant uptime is mission critical.
 
 ## Extra Footnotes
 
@@ -2184,15 +2225,25 @@ Here are the things I've footnoted that don't fall under an appendix category.
 
 ### Browser Languages
 
+TODO
+
 Mention plugins (like Flash, Silverlight), web assembly, etc.
 
 ### SPA
 
+TODO
+
 ### DRY
+
+TODO
 
 ### async
 
+TODO
+
 ### events
+
+TODO
 
 ## Other Web Development Things
 
