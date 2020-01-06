@@ -1932,27 +1932,109 @@ Here are more links (and brief explanations) on where you can learn more about t
 
 ### HTML
 
+HTML is one of the three technologies that underpins the modern web. In particular, HTML defines the content/structure of the page. While you can get away with a surface-level knowledge of HTML (many web developers do), spending a few hours to really understand what's going on pays dividends if you develop complex web applications.
+
+There are lots of great resources online for learning HTML (which is often learned in conjunction with CSS). Here are a few of my favourites (but feel free to find what you want):
+
+* [Marksheet](https://marksheet.io/), a great reference/tutorial on HTML & CSS. Does a great job on explaining truly understanding HTML and CSS rather than just memorizing properties
+* [Mozilla Web Tutorials](https://developer.mozilla.org/en-US/docs/Web/Tutorials), community-driven web tutorials from one of the open-source defenders of the internet
+* [W3Schools HTML Tutorial](https://www.w3schools.com/html/default.asp), one of the most common tutorial/reference sites for web development
+* [Interneting is Hard, HTML & CSS](https://internetingishard.com/html-and-css/), an elegant and well-presented introduction to HTML & CSS for people with no coding experience
+* [Khan Academy HTML & CSS](https://www.khanacademy.org/computing/computer-programming/html-css), if you love learning with Khan Academy, then this is a great resource for you
+* [Codecademy HTML & CSS](https://www.codecademy.com/catalog/language/html-css), a really popular interactive HTML and CSS tutorial. Personally will say that your mileage may vary
+
+Things you should probably know:
+
+* basic tags (body, head, paragraph, heading, div, span, img, anchor, button, forms)
+* attributes and properties
+* the box model, and the DOM
+* the difference between block and inline elements
+* semantic (HTML5) elements
+
 ### CSS
+
+CSS is one of the three technologies that underpins the modern web. CSS controls how your webpage looks, and is critical for making your web application beautiful and easy to use. CSS can be quite tricky to learn (especially because browser behaviour can be unintuitive), and a deep understanding isn't necessary; but, masters of CSS are high in demand (and can make any application look stunning).
+
+There are lots of great resources online for learning CSS (which is often learned in conjunction with HTML). Here are a few of my favourites (but feel free to find what you want):
+
+* [Marksheet](https://marksheet.io/), a great reference/tutorial on HTML & CSS. Does a great job on explaining truly understanding HTML and CSS rather than just memorizing properties
+* [Mozilla Web Tutorials](https://developer.mozilla.org/en-US/docs/Web/Tutorials), community-driven web tutorials from one of the open-source defenders of the internet
+* [W3Schools CSS Tutorial](https://www.w3schools.com/css/default.asp), one of the most common tutorial/reference sites for web development
+* [Interneting is Hard, HTML & CSS](https://internetingishard.com/html-and-css/), an elegant and well-presented introduction to HTML & CSS for people with no coding experience
+* [Khan Academy HTML & CSS](https://www.khanacademy.org/computing/computer-programming/html-css), if you love learning with Khan Academy, then this is a great resource for you
+* [Codecademy HTML & CSS](https://www.codecademy.com/catalog/language/html-css), a really popular interactive HTML and CSS tutorial. Personally will say that your mileage may vary
+* [Flexbox Froggy](https://flexboxfroggy.com/) and [Grid Garden](https://codepip.com/games/grid-garden/), interactive games to learn how to use Flexbox and CSS Grid to position items
+* [W3Schools Bootstrap Tutorial](https://www.w3schools.com/bootstrap/bootstrap_ver.asp), one tutorial for Bootstrap (a really common CSS framework)
+
+Things you should probably know:
+
+* basic CSS properties (e.g. styling text, borders, background colors, font size)
+* very important properties to understand (`display`, `position`)
+* selectors (class, id, tag, etc.), specificity, and cascading (CSS stands for Cascading Style Sheets after all!)
+* floats vs. flexbox vs. css grid, and when you'll want to use what
+* colors! (hex, rgb, rgba, hsl, etc.)
+* CSS animations!
+* a general knowledge of what CSS frameworks are (e.g. Bootstrap, Bulma)
+* a general knowledge of what CSS preprocessors are (e.g. SASS and LESS)
 
 ### JS
 
+Javascript is one of the three technologies that underlies the modern web. It started as a way for developers to create micro-interactions on their site, but now can be used for almost anything (mostly thanks to [NodeJS](#nodejs)). If you develop web applications, you have to know how to use Javascript. And, knowing its quirks (why is everything an object? what is ECMAScript?) can make you a web development superstar.
+
+There is a behemoth of resources to learn Javascript, and to be honest there probably isn't just one article or tutorial you can walk through to gain a full understanding. However, these might give you a start (but you'll definitely have to do more on your own):
+
+* [You Don't Know JS](https://github.com/getify/You-Dont-Know-JS), possibly my favourite ebook on Javascript; you'll get an amazing foundation in Javascript, and understand what makes it different from other languages
+* [Mozilla Web Tutorials](https://developer.mozilla.org/en-US/docs/Web/Tutorials), community-driven web tutorials from one of the open-source defenders of the internet
+* [W3Schools JS Tutorial](https://www.w3schools.com/js/default.asp), one of the most common tutorial/reference sites for web development
+* Khan Academy [Intro to JS w/ Processing](https://www.khanacademy.org/computing/computer-programming/programming) and [Making Webpages Interactive](https://www.khanacademy.org/computing/computer-programming/html-css-js), an intro with a popular drawing library and practical applications for making webpages; if you love learning with Khan Academy, then this is a great resource for you
+* [Codecademy Javascript](https://www.codecademy.com/catalog/language/javascript), a really popular interactive JS tutorial. Personally will say that your mileage may vary
+* [Eloquent Javascript](https://eloquentjavascript.net/), an MIT-Licensed textbook on Javascript
+* [Javascript.info](https://javascript.info/), a textbook-style introduction to JS
+
+Things you should probably know:
+
+* the basics of programming (conditionals, loops, sequential flow, functions, variables, etc.)
+* how can you manipulate the DOM (i.e. the webpage) with JS - adding or removing content, changing classes, etc.
+* Javascript's type system - how is it like languages you've used, and how is it different
+* how do variable scopes work in Javascript (not what you'd think); why do people use `let` instead of `var`?
+* what is JSON?
+* what does it mean that Javascript is event-driven? how does async work in Javascript?
+* why are there different versions of Javascript? what is ES6, ECMAScript, etc.
+* what is jQuery? why is it so popular?
+* what is Node.js? why is it so popular?
+* what is Typescript? why does it exist?
+
 #### this
+
+Turns out, `this` is one of the most confusing topics of object-oriented programming. I like [Mozilla's reference page](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this) on how `this` operates in Javascript; however, I think practice is the best way to cement your understanding.
 
 #### Arrow Functions
 
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
+We almost exclusively used arrow functions in this tutorial. [Here's a Mozilla article](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions) that explains what they are; the specific thing you'll want to keep in mind is how they're bound to calling scopes (e.g. how it works with `this`).
 
 #### Javascript Classes
 
+Object-oriented programming is one of the fundamental paradigms used in software engineering. Usually people take classes on OOP, but there are some solid online resources you can try your hand at:
+
+* [Mozilla Reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes)
+* [W3Schools Tutorial](https://www.w3schools.com/js/js_classes.asp)
+* [DigitalOcean Writeup](https://www.digitalocean.com/community/tutorials/understanding-classes-in-javascript)
+
+I will say, Javascript by default wasn't a programming language designed for strict class-based OOP (it has its roots in prototypes). However, classes have become very popular, especially in the React community!
+
 #### ES6 Import
 
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import
+We used the `import` and `export` keywords several times when creating our own classes and importing them from other files. [Here's a quick Mozilla writeup](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) on how `import` works.
 
 #### Webpack
 
+[Webpack](https://webpack.js.org/) works under-the-hood in a significant amount of web applications, but few people know how to really use it. `create-react-app` does all of this for us, but if you're interested [their website](https://webpack.js.org/concepts/) is a great place to start.
+
 #### JS Date
 
-What was going on in this function?
+Dates and times work slightly differently in Javascript than they do in other languages (one common difference is that Unix timestamps are in milliseconds, rather than seconds). As with almost anything, [Mozilla has a great reference page](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date) on how the `Date` object works in Javascript.
+
+Also, what was going on in this function?
 
 ```js
 const getTimeString = timestamp => {
@@ -1975,10 +2057,23 @@ const getTimeString = timestamp => {
 }
 ```
 
+The `getTimeString` function takes in one parameter, `timestamp`; it's assumed to be a JS Unix Timestamp (e.g. # of milliseconds from Jan 1, 1970 UTC), but in theory could be any date format that fits in the Date constructor.
+
+Then, the next few lines of `let` statements grab numerical values for individual aspects of date and time. Note that `.getMonth() + 1` is required since it's zero-indexed, but we usually view January as the 1st month.
+
+Then, we do something called zero-padding: using ternary operators, we add an extra 0 if the string is only one digit (times and dates tend to be 2). We take advantage of Javascript's type system to implicitly convert the types.
+
+Finally, we construct the string by concatenating the strings, and return it. No side effects!
 
 #### JS Promises
 
+Javascript usually handles asynchronous behaviour with events, but promises are another really popular mechanism to handle async (and one that I personally really enjoy using). It's become very popular in JS recently, and we used it briefly to log the results of our Firebase operations. In general, it's very common when using web requests.
+
+[Mozilla has a top-down reference of Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), and a Google Developer has written a [guide on why you should use Promises](https://developers.google.com/web/fundamentals/primers/promises).
+
 #### JS Try Catch
+
+`try...catch` is a really common syntax pattern used for error handling. You'll encouter it in a variety of languages, and they tend to be implemented in very similar ways. [Mozilla](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/try...catch) has a good reference on how to use it.
 
 ### NodeJS
 
