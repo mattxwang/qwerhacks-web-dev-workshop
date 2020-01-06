@@ -2077,23 +2077,49 @@ Javascript usually handles asynchronous behaviour with events, but promises are 
 
 ### NodeJS
 
+[Node.js](https://nodejs.org/en/) is one of the most ground-breaking changes to web development in recent memory. At a very basic level, it's a way to run Javascript code anywhere; you're no longer restricted to just a browser. This has directly and indirectly led to Javascript-based command line tools, server implementations, mobile and desktop apps, and transpilers (among many other innovations). It also started `npm`, a package manager for Javascript, which we used to install dependencies in this workshop (and which you'll no doubt use more if you do more web development).
+
+In particular, Node.js is powerful because it uses Javascript's event model to create non-blocking programs. It's the foundation for web frameworks like [Express](https://expressjs.com/), and you'll definitely use things that use Node in the future.
+
 ### More React
+
+We only briefly went over React, and there's a lot more to learn. As with many things, there are many different ways that you can learn React; and, as with many things, there's a lot of React to learn.
+
+Usually I'd present a few options, but I strongly believe that [React's own tutorial](https://reactjs.org/tutorial/tutorial.html) (where you build a tic-tac-toe app) is the best place to start. In general, I think the React community does a great job creating primary resources for developers to learn how to use React (which makes sense, since they want React to succeed).
+
+The [React Docs](https://reactjs.org/docs/hello-world.html) also has a more reference-style guide to learning React, and they document the ins and outs of all of the key features.
+
+The other way you'll learn React is through practice: as you build more and more web apps with React, you'll understand why it was created; and more importantly, when you build apps *without* React, you'll understand what problems that it solves. I will say, the [Thinking in React](https://reactjs.org/docs/thinking-in-react.html) article sums up a bit of what I'm talking about: seeing state, components, and [composition](https://reactjs.org/docs/composition-vs-inheritance.html) when you're architecting a web app.
+
+I'll outline a few common topics in these footnotes, but the list isn't exhaustive.
 
 #### JSX
 
-https://reactjs.org/docs/introducing-jsx.html
-
-stuff on jsx
+[JSX](https://reactjs.org/docs/introducing-jsx.html) is a templating language (or extension) that React uses to generate components. You can definitely [use React without JSX](https://reactjs.org/docs/react-without-jsx.html), but I wouldn't recommend it unless you know exactly what you're doing. [The React introduction to JSX page](https://reactjs.org/docs/introducing-jsx.html) is a good start with what you can do, and [JSX In Depth](https://reactjs.org/docs/jsx-in-depth.html) is a great secondary resource.
 
 #### React Render Function
 
+The render function is how you can put stuff on the screen, which seems important. We only explored React with class-based components, so we always put the render function as a special class function (extended from `React.Component`); however, you can also use `ReactDOM.render()`, which is how [the getting started guide first introduces the render function](https://reactjs.org/docs/rendering-elements.html).
+
+If you want a more in-depth reference, look at the [React.Component API](https://reactjs.org/docs/react-component.html).
+
 #### super (props)
+
+I glossed over `super(props)` in the workshop; refer to [the React page on Components and Props](https://reactjs.org/docs/components-and-props.html) and the [React.Component API](https://reactjs.org/docs/react-component.html).
 
 #### more on state
 
+In addition to the brief intro I did on state, I'd recommend looking at the [State and Lifecycle Docs Page](https://reactjs.org/docs/state-and-lifecycle.html) for a solid working understanding of state. [This page on lifting state up](https://reactjs.org/docs/lifting-state-up.html) is very useful (as you'll often lift/hoist state up when writing apps), and [the React.Component API entry on setState](https://reactjs.org/docs/react-component.html#setstate) can help you better understand what `this.setState()` actually does.
+
+While it's not directly related, I find that [React Context](https://reactjs.org/docs/context.html) tends to be a common solution to many state-induced problems (basically it allows for global "props" of some sort). 
+
 #### nested state
 
+Nested state can be tricky! [The React.Component API entry on setState](https://reactjs.org/docs/react-component.html#setstate) is a good start on what can be bad about updating nested objects within state. To solve this, people will often use [ImmutableJS](https://github.com/immutable-js/immutable-js) and/or [Redux](https://redux.js.org/), though that's not the only reason you'd use either.
+
 #### event handlers
+
+Short answer: read [Handling Events](https://reactjs.org/docs/handling-events.html).
 
 So, I glossed over this:
 
@@ -2107,18 +2133,32 @@ handleMessageChange = e => {
 }
 ```
 
-https://reactjs.org/docs/handling-events.html
+What was really going on here? Well, `e` is actually an event - in particular, a [Synthetic Event](https://reactjs.org/docs/events.html) (which you can think of as similar to traditional Javascript events). Like in vanilla JS, events can have targets (which tell us the DOM node that triggered the event), and all inputs have a `value` attribute that has the input's current value.
+
+So, in this code, whenever the specific event is triggered (which in our case, was `onChange`), we take the input's value and update our state, which keeps our state consistent with the user's input.
 
 #### hooks
 
+Hooks are a new-fangled way to deal with side effects. [Check out the introduction to hooks for more info](https://reactjs.org/docs/hooks-intro.html).
+
 #### component lifecycles
 
-https://reactjs.org/docs/state-and-lifecycle.html#adding-lifecycle-methods-to-a-class
-
+I briefly went over component lifecycles when we talked about firestore integration, but it's a more complicated idea than you might think! However, when you build more complex apps, it's a pretty important idea to understand. [The guide has a better intro to lifecycles](https://reactjs.org/docs/state-and-lifecycle.html#adding-lifecycle-methods-to-a-class), and the [React.Component API reference](https://reactjs.org/docs/react-component.html#the-component-lifecycle) has everything you'll need to know about components (including construction and destruction order).
 
 #### Create React App
 
-https://github.com/facebook/create-react-app
+When we set up our project, we used [create-react-app](https://github.com/facebook/create-react-app), which is a common starter framework that Facebook made to bootstrap React projects. It's really useful, and lots of projects use it - you can get through a lot of web development without every leaving it!
+
+There's [extensive documentation](https://create-react-app.dev/docs/documentation-intro) on what create-react-app exactly does for you, but some of the big things it handles includes:
+
+* compiling ES6+ code to different targets with [babel](https://babeljs.io/)
+* module importing and bundling with [webpack](https://webpack.js.org/)
+* hot module reloading (HMR)
+* component testing with [Jest](https://jestjs.io/)
+* linting with ESLint
+* building and deploying your project
+
+If you want to transition your project off of create-react-app, you can [eject out of it](https://create-react-app.dev/docs/available-scripts#npm-run-eject).
 
 ### More Firebase
 
