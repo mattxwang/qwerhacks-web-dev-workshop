@@ -1939,6 +1939,8 @@ First, what did we learn?
     * implementing a create event
 * briefly deploying our project with Heroku
 
+Keep in mind that you can now use all of this knowledge to create your own app - it doesn't (and probably won't be) a chatroom! If you want to log data, create a social network, or interface with an embedded system, the topics we covered today can (and probably will) be super useful!
+
 ### Further Work/Learning
 
 I included two slides in the workshop on further things you can do
@@ -1947,7 +1949,14 @@ TODO
 
 ### Some Caveats
 
-TODO
+There are a few things I want to mention in writing that you should keep in mind (moreso if you use this stuff in the future). Not super important though, so if this doesn't make sense don't worry about it!
+
+1. Very broadly, this was a fast workshop where we didn't get time to cover all of the details. If you have any questions, feel free to ask me or Google! I'd recommend it if you want to keep on working on this kind of stuff in the future.
+2. The way we organized our app state (with an array of objects for `messages`) is not actually great React practice, since it involves [nested state](#nested-state). If we wanted to individually update parts of message objects (which we didn't in this workshop), you might run into problems.
+3. We attached our Firestore subscriber to our component's lifecycle functions. This is fine for our simple case, but if your app was very complex and needed to do things in the background, balance multiple listeners, or do other complex things then our method is not very sustainable. In more complex apps, I'd use Redux and make this an action.
+4. The way we organized our Firestore data scheme is not super extendable. For example, usually chatrooms will have user accounts, and attribute messages to specific users. We didn't really futureproof with this in mind (and I didn't intend to for this workshop), but thinking about how to organize your data is actually *really* important.
+5. We actually broke our test in `App.test.js`, since the element it checks for no longer exists (we removed it when we reset our app). If you want to use `npm run test` and integreate Jest/Enzyme into your app, you'll need to update that test.
+6. As it is right now, our app isn't very accessible: we didn't add `aria` elements, look at browser font sizes, or really think about color contrasts. However, I think web accessibility is a very important concept; if you're interested, [Mozilla aggregates many documents on a11y](https://developer.mozilla.org/en-US/docs/Web/Accessibility).
 
 ## Appendix
 
@@ -2248,25 +2257,29 @@ Here are the things I've footnoted that don't fall under an appendix category.
 
 ### Browser Languages
 
-TODO
-
-Mention plugins (like Flash, Silverlight), web assembly, etc.
+Technically, Javascript (or ECMAScript, whatever you prefer) is not the only language you can run in the browser. [WebAssembly](https://webassembly.org/) has become popular recently and has solid browser support (though it's still not widely used). Flash, Silverlight, and Java can still run on the web, though this is becoming less popular due to security reasons and the advancements made with HTML5 and ES6+. And, you can compile/transpile many other languages into Javascript, like Python with [Skulpt](https://skulpt.org/) (which is part of what I do at Teach LA)!
 
 ### SPA
 
-TODO
+`create-react-app`, and in general React, is often used to make **S**ingle-**p**age **A**pplications (SPA). The details aren't that important for you as a developer, but [the Wikipedia article](https://en.wikipedia.org/wiki/Single-page_application) is a nice quick read.
 
 ### DRY
 
-TODO
+One common programming principle that you'll learn is DRY, or Don't Repeat Yourself. The idea is to reduce possibilities for human error and to make code more efficient by using abstractions and good organisation. [The Wikipedia article](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) is not a bad primer.
 
 ### async
 
-TODO
+When you first learn programming, you'll typically learn that everything is sequential and single-threaded (i.e. only one thing happens at a time). With real-world computers, this isn't true - tons of things happen in the background, including loading web pages, listening for keystrokes, or listening for new data.
+
+The overall idea behind this is called [asynchronous programming](https://en.wikipedia.org/wiki/Asynchrony_(computer_programming)), and it's a pretty important concept in computer science. A good understanding of what's going on with async behaviour will likely pay dividends in the future, whether you do embedded systems, web dev, or machine learning.
+
+I think the best way to learn async is probably in a classroom or other formal/rigorous setting. However, the [Mozilla Docs](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Concepts) has a good primer on it for Javascript.
 
 ### events
 
-TODO
+Another (maybe slightly less) important computer science concept is [event-driven programming](https://en.wikipedia.org/wiki/Event-driven_programming). It forms the basis for Javascript, but also many other programming languages, operating systems, and other computer things.
+
+Mozilla [has a good page](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop) that explains how the Javascript Event Loop works.
 
 ## Other Web Development Things
 
