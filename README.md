@@ -93,10 +93,13 @@ Since this is a hackathon workshop, it goes for breadth over depth and emphasize
 * [Other Web Development Things](#other-web-development-things)
 * [Copyright](#copyright)
 
-
 ## Brief Overview
 
-The goal of this workshop is to create a skeleton for a basic web application with client-"server" interaction (I'll explain why "server" was in quotes in a moment). Specifically, the example app we'll be making is an online chatroom.
+**TL;DR**: we're building an online chatroom with React and Firebase that uses most of the common web application skills.
+
+The goal of this workshop is to create a skeleton for a basic web application with client-"server" interaction (I'll explain why "server" was in quotes in a moment).
+
+Specifically, the example app we'll be making is an online chatroom. I picked a chatroom because it's fun and you can play with it instantly, but also because it covers most of the basics for web development (styling a page, user input, sending & receiving data to a server).
 
 The topics we'll cover today are the bread and butter of web development, and hopefully this workshop gives you a working understanding of the basics of web development. Plus, it should give you the base set of skills to make awesome web applications at QWER Hacks!
 
@@ -1544,14 +1547,13 @@ Now, we're going to be taken to an "Add Firebase SDK" page. It'll give us some c
 
 ![firebase web app config page](images/create-app-3.png)
 
-... and we'll modify it slightly to put it into our app! Make a new file called `src/lib/firebase.js`, and place this code into it:
-
-![screenshot of code for web app config](images/create-app-4.png)
+... and we'll modify it slightly to put it into our app! Make a new file called `src/lib/firebase.js`, and reformat so it looks like this (you're **not copy-pasting this code block**):
 
 ```js
 import firebase from 'firebase';
 
 const config = { // this is the same thing as `firebaseConfig`
+    // THIS SHOULD BE YOUR CONFIG! NOT WHAT'S IN THIS FILE
     apiKey: "AIzaSyBV6QuxKFGEpS0IRmlcTfYyvA8xw79thjQ",
     authDomain: "qwer-hacks-2020.firebaseapp.com",
     databaseURL: "https://qwer-hacks-2020.firebaseio.com",
@@ -1846,7 +1848,7 @@ Right now, you can view your app on your own computer. You could distribute it t
 
 So, let's do exactly that.
 
-There are [deployment options available](#deployment-options), but today I'll quickly walk you through how to do this on Heroku, which is one (free-to-start) provider of a variety of web services (that usually fall under the realm of "DevOps").
+There are many [deployment options available](#deployment-options), but today I'll quickly walk you through how to do this on Heroku, which is one (free-to-start) provider of a variety of web services (that usually fall under the realm of "DevOps").
 
 First, head to [Heroku's website (https://www.heroku.com/)](https://www.heroku.com/), and sign up for an account. You don't need a credit card or anything to use it!
 
@@ -1961,6 +1963,45 @@ There are a few things I want to mention in writing that you should keep in mind
 ## Appendix
 
 Here are more links (and brief explanations) on where you can learn more about the stuff that's covered in this workshop.
+
+* [Appendix](#appendix)
+    * [HTML](#html)
+    * [CSS](#css)
+    * [JS](#js)
+        * [this](#this)
+        * [Arrow Functions](#arrow-functions)
+        * [Javascript Classes](#javascript-classes)
+        * [ES6 Import](#es6-import)
+        * [Webpack](#webpack)
+        * [JS Date](#js-date)
+        * [JS Promises](#js-promises)
+        * [JS Try Catch](#js-try-catch)
+    * [NodeJS](#nodejs)
+    * [More React](#more-react)
+        * [JSX](#jsx)
+        * [React Render Function](#react-render-function)
+        * [super (props)](#super-props)
+        * [more on state](#more-on-state)
+        * [nested state](#nested-state)
+        * [event handlers](#event-handlers)
+        * [hooks](#hooks)
+        * [component lifecycles](#component-lifecycles)
+        * [Create React App](#create-react-app)
+    * [More Firebase](#more-firebase)
+        * [Firebase Security Rules](#firebase-security-rules)
+        * [Collections and Iterating](#collections-and-iterating)
+    * [Server Languages](#server-languages)
+    * [Databases](#databases)
+        * [SQL vs noSQL](#sql-vs-nosql)
+        * [CRUD](#crud)
+    * [MV Frameworks](#mv-frameworks)
+    * [Deployment Options](#deployment-options)
+* [Extra Footnotes](#extra-footnotes)
+    * [Browser Languages](#browser-languages)
+    * [SPA](#spa)
+    * [DRY](#dry)
+    * [async](#async)
+    * [events](#events)
 
 ### HTML
 
