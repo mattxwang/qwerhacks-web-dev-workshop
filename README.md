@@ -1912,7 +1912,11 @@ Cool cool! Now you can show your friends your awesome web app!
 
 ## Ending Notes
 
-Great, so we built our chatroom. I want to highlight a few skills that you (hopefully) learned, a few caveats about what I talked about, and what's ahead in the road.
+Wow, we did it!
+
+Thank you for getting through this workshop (and this README)! I put a lot of work into it, and I really hope that it's helped you on your journey to becoming a web developer! If you have any feedback at all for me, please let me know (probably by email at [matt@matthewwang.me](mailto:matt@matthewwang.me)) - the goal is to make web development easier for *everyone* to learn!
+
+A few extra things: I want to highlight a few skills that you (hopefully) learned, a few caveats about what I talked about, and what's ahead in the road.
 
 ### Topic Review
 
@@ -1945,9 +1949,39 @@ Keep in mind that you can now use all of this knowledge to create your own app -
 
 ### Further Work/Learning
 
-I included two slides in the workshop on further things you can do
+In general, I think the next step is to tailor what we did to make your own app - I doubt it's going to be a single-room chatroom (though if it is, awesome)! It turns out, many other things use the same data model that we just created: social networks, review websites, task managers, and more all follow this same create, render, and update model! With minor tweaks to what we've done, you can also make an image hosting site, an online code editor, and much, much more!
 
-TODO
+If you're interested about further work with React or Firebase:
+
+* React
+    * Fleshing out the app is the #1 priority!
+    * [Redux](https://redux.js.org/) - a way to manage complicated (especially global) state
+    * [React Hooks](https://reactjs.org/docs/hooks-intro.html), a new-fangled and efficient way to implement side effects and state
+    * [Forms](https://reactjs.org/docs/forms.html) if you're looking to integarte more user input
+    * [React Router](https://reacttraining.com/react-router/) if you want to create a multi-page app
+* Firebase
+    * [Firebase Auth](https://firebase.google.com/docs/auth) if you want to, you know, actually authenticate users
+    * [Firebase Storage](https://firebase.google.com/docs/storage) for large data storage (e.g. user-uploaded images, videos, binaries)
+    * [Firebase Cloud Functions](https://firebase.google.com/docs/functions) to fake more backend calls
+    * [ML Kit](https://firebase.google.com/docs/ml-kit) if you want to use ML in your (mobile) app
+
+And, if you want to do more web-development related things:
+
+* Make your app a Progressive Web App (PWA) - learn more [here](https://developers.google.com/web/progressive-web-apps)
+* Create a desktop app with [Electron](https://electronjs.org/) (*)
+* Build a similarly-structured mobile app with [React Native](https://facebook.github.io/react-native/) (*)
+* Create a backend to handle more complex server/DB logic:
+    * In Python: try Flask or Django
+    * In JS/Node: try Express
+    * In Go: try… Go (and net.http)
+    * In Java: try Servlets
+    * In C++: try TreeFrog or Pistache (just REST)
+    * Or your favourite language!
+* Learn about Databases! (more [here](#databases))
+    * SQL
+    * noSQL (e.g. MongoDB)
+
+(*) these are not the best ways to do these specific things, but are pretty good for hackathons. talk to me if you want more thoughts on them!
 
 ### Some Caveats
 
@@ -1958,7 +1992,7 @@ There are a few things I want to mention in writing that you should keep in mind
 3. We attached our Firestore subscriber to our component's lifecycle functions. This is fine for our simple case, but if your app was very complex and needed to do things in the background, balance multiple listeners, or do other complex things then our method is not very sustainable. In more complex apps, I'd use Redux and make this an action.
 4. The way we organized our Firestore data scheme is not super extendable. For example, usually chatrooms will have user accounts, and attribute messages to specific users. We didn't really futureproof with this in mind (and I didn't intend to for this workshop), but thinking about how to organize your data is actually *really* important.
 5. We actually broke our test in `App.test.js`, since the element it checks for no longer exists (we removed it when we reset our app). If you want to use `npm run test` and integreate Jest/Enzyme into your app, you'll need to update that test.
-6. As it is right now, our app isn't very accessible: we didn't add `aria` elements, look at browser font sizes, or really think about color contrasts. However, I think web accessibility is a very important concept; if you're interested, [Mozilla aggregates many documents on a11y](https://developer.mozilla.org/en-US/docs/Web/Accessibility).
+6. As it is right now, our app isn't very accessible: we didn't add `aria` elements, look at browser font sizes, or really think about color contrasts. However, I think web accessibility is a very important concept; if you're interested, [Mozilla aggregates many documents on a11y](https://developer.mozilla.org/en-US/docs/Web/Accessibility). React also has [a quick writeup on a11y](https://reactjs.org/docs/accessibility.html).
 
 ## Appendix
 
