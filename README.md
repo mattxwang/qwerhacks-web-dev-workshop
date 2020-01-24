@@ -1644,7 +1644,7 @@ One easy way to solve this is to slightly change our model:
 
 * when the user starts using the app, tell the database to start sending messages
 * then, the database sends messages to the client
-* when the user exists the client, tell the database to stop sending messages
+* when the user exits the client, tell the database to stop sending messages
 
 Cool! But how can we know if the user's using the app? We can use React's **Component Lifecycles**.
 
