@@ -1,5 +1,7 @@
 # 🌈 Intro to Web Development (with React & Firebase) Workshop (at QWER Hacks 2020)
 
+**Note: this workshop is now outdated. Please check out the [2021 version](https://github.com/malsf21/qwerhacks-21-workshops), which splits things up better, uses React Hooks, and has prerecorded videos to go along with!!**
+
 Hey there! This repo contains the finished product of QWER Hacks 2020's Intro to Web Development (with React & Firebase) workshop, and a written guide that summarizes and expands upon the content of the workshop. For reference, our goal is to develop a chatroom application; you can view a deployed version of the finished product [here](https://qwer-hacks-2020.herokuapp.com/) (it's a Heroku instance, so it might take a bit of time to boot up).
 
 It assumes basic understanding of programming fundamentals (e.g. functions, conditionals, variables) and a bit of experience with object-oriented programming, but doesn't explicitly assume previous HTML, CSS, JS, React, or Firebase experience. However, if you don't have experience with HTML/CSS/JS, I 100% recommend that you look at some of the [appendix resources](#appendix) first, since this document/workshop brushes over the details.
